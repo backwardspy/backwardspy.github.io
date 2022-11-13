@@ -43,6 +43,7 @@ h1 {
 
 img#pigeon {
     margin: 0 auto;
+    max-width: 384px;
 }
 
 div.links {
