@@ -1,0 +1,142 @@
+@import url("reset.css");
+@import url("catppuccin/catppuccin.css");
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sono&display=swap');
+
+body {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 50px;
+    background-color: #000;
+    color: var(--ctp-mocha-text);
+    font-family: "Sono", sans-serif;
+    font-size: 1.1rem;
+}
+
+a {
+    color: var(--ctp-mocha-blue);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:visited {
+    color: var(--ctp-mocha-lavender);
+}
+
+a:hover {
+    color: var(--ctp-mocha-sky);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Share Tech Mono", monospace;
+}
+
+h1 {
+    text-align: center;
+    font-size: min(5rem, 12vw);
+    margin: 1rem 0;
+}
+
+img#pigeon {
+    margin: 0 auto;
+}
+
+div.links {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+div.links>div.category {
+    flex: auto;
+    margin: 10px;
+    padding: 10px;
+    background-color: #111;
+    border-radius: 5px;
+}
+
+div.links>div.category>h2 {
+    text-align: center;
+}
+
+div.links>div.category>ul>li {
+    list-style: none;
+}
+
+div.links>div.category>ul>li::before {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin: 0px 4px -2px 0px;
+    filter: invert();
+    background-size: cover;
+}
+
+div.links>div.category>ul>li.book::before {
+    background-image: url("/res/icons/book.svg");
+}
+
+div.links>div.category>ul>li.camera::before {
+    background-image: url("/res/icons/camera.svg");
+}
+
+div.links>div.category>ul>li.cat::before {
+    background-image: url("/res/icons/cat.svg");
+}
+
+div.links>div.category>ul>li.code::before {
+    background-image: url("/res/icons/code.svg");
+}
+
+div.links>div.category>ul>li.file::before {
+    background-image: url("/res/icons/file.svg");
+}
+
+div.links>div.category>ul>li.gamepad::before {
+    background-image: url("/res/icons/gamepad.svg");
+}
+
+div.links>div.category>ul>li.github::before {
+    background-image: url("/res/icons/github.svg");
+}
+
+div.links>div.category>ul>li.globe::before {
+    background-image: url("/res/icons/globe.svg");
+}
+
+div.links>div.category>ul>li.home::before {
+    background-image: url("/res/icons/home.svg");
+}
+
+div.links>div.category>ul>li.magic::before {
+    background-image: url("/res/icons/magic.svg");
+}
+
+footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 30px;
+    text-align: center;
+}
+
+@media (max-width: 700px) {
+    footer {
+        flex-direction: column;
+    }
+}
+
+footer>span {
+    flex: auto;
+}
+
+img.icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    filter: invert();
+}
