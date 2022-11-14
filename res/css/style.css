@@ -117,6 +117,10 @@ div.links>div.category>ul>li.magic::before {
     background-image: url("/res/icons/magic.svg");
 }
 
+div.links>div.category>ul>li.share::before {
+    background-image: url("/res/icons/share.svg");
+}
+
 footer {
     display: flex;
     flex-direction: row;
