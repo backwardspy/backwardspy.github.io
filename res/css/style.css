@@ -1,7 +1,3 @@
-@import url("reset.css");
-@import url("catppuccin/catppuccin.css");
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Sono&display=swap');
-
 body {
     max-width: 800px;
     margin: 0 auto;
