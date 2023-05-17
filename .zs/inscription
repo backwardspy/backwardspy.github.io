@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# params: file, author, author-link
+
+# read the given file surrounding each line with <p> tags
+if [ -f "$1" ]; then
+  inscription=$(sed -e 's/^/<p>/' -e 's/$/<\/p>/' $1)
+else
+  echo "file not found: $1"
+  exit
+fi
+
+lang=$(basename $1 | sed 's/-/ /g')
+
+# generate the inscription's HTML
+cat << EOF
+<div class="inscription">
+$inscription
+<p class="credit"><small>$lang translation by <a href="$3">$2</a></small></p>
+</div>
+EOF
