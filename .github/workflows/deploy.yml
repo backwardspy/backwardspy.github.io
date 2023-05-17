@@ -13,10 +13,10 @@ jobs:
 
       - uses: "actions/setup-go@v4"
 
-      - name: "install zs"
+      - name: "Install zs"
         run: "go install go.mills.io/zs@latest"
 
-      - name: "build static files"
+      - name: "Build static files"
         run: "zs build"
 
       - uses: "actions/upload-pages-artifact@v1"
@@ -38,6 +38,6 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
-      - name: "deploy to github pages"
+      - name: "Deploy to GitHub Pages"
         id: "deployment"
         uses: "actions/deploy-pages@v2"
