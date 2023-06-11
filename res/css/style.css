@@ -72,10 +72,6 @@ div.links>div.category>ul>li::before {
     background-size: cover;
 }
 
-div.links>div.category>ul>li.book::before {
-    background-image: url("/res/icons/book.svg");
-}
-
 div.links>div.category>ul>li.camera::before {
     background-image: url("/res/icons/camera.svg");
 }
@@ -84,32 +80,8 @@ div.links>div.category>ul>li.cat::before {
     background-image: url("/res/icons/cat.svg");
 }
 
-div.links>div.category>ul>li.code::before {
-    background-image: url("/res/icons/code.svg");
-}
-
-div.links>div.category>ul>li.file::before {
-    background-image: url("/res/icons/file.svg");
-}
-
-div.links>div.category>ul>li.gamepad::before {
-    background-image: url("/res/icons/gamepad.svg");
-}
-
 div.links>div.category>ul>li.github::before {
     background-image: url("/res/icons/github.svg");
-}
-
-div.links>div.category>ul>li.globe::before {
-    background-image: url("/res/icons/globe.svg");
-}
-
-div.links>div.category>ul>li.home::before {
-    background-image: url("/res/icons/home.svg");
-}
-
-div.links>div.category>ul>li.magic::before {
-    background-image: url("/res/icons/magic.svg");
 }
 
 div.links>div.category>ul>li.share::before {
