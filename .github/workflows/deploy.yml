@@ -9,19 +9,11 @@ jobs:
     runs-on: "ubuntu-latest"
 
     steps:
-      - uses: "actions/checkout@v2"
-
-      - uses: "actions/setup-go@v4"
-
-      - name: "Install zs"
-        run: "go install go.mills.io/zs@latest"
-
-      - name: "Build static files"
-        run: "zs build"
-
-      - uses: "actions/upload-pages-artifact@v1"
+      - uses: "actions/checkout@v4"
+      - uses: "dtolnay/rust-toolchain@stable"
+      - run: "cargo build"
+      - uses: "actions/upload-pages-artifact@v3"
         with:
-          name: "github-pages"
           path: "dist/"
 
   deploy:
@@ -40,4 +32,4 @@ jobs:
     steps:
       - name: "Deploy to GitHub Pages"
         id: "deployment"
-        uses: "actions/deploy-pages@v2"
+        uses: "actions/deploy-pages@v4"
