@@ -22,7 +22,7 @@ jobs:
       - uses: "actions/upload-pages-artifact@v1"
         with:
           name: "github-pages"
-          path: ".pub/"
+          path: "dist/"
 
   deploy:
     needs: "build"
