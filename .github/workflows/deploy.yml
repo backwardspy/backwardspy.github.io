@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: "actions/checkout@v4"
       - uses: "dtolnay/rust-toolchain@stable"
-      - run: "cargo build"
+      - run: "cargo run"
       - uses: "actions/upload-pages-artifact@v3"
         with:
           path: "dist/"
