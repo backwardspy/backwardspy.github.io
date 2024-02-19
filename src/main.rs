@@ -65,7 +65,9 @@ fn main() -> Result<()> {
 
     let res_dir = &out_dir.join("res");
     println!("replacing {}", res_dir.display());
-    fs::remove_dir_all(res_dir)?;
+    if res_dir.exists() {
+        fs::remove_dir_all(res_dir)?;
+    }
     copy_dir("res", res_dir)?;
 
     println!("copying cruft");
