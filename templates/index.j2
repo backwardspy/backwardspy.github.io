@@ -1,0 +1,113 @@
+{% extends "base.j2" %}
+
+{% block container %}
+
+<div id="top">
+  <img id="pigeon" src="res/img/avatar-circle.webp" />
+  <div>
+    <h1>pigeon</h1>
+    <sub>aka backwardspy</sub>
+  </div>
+  <em>best viewed at 1024x768</em>
+</div>
+
+<nav>
+<a href="/">index</a>
+&middot;
+<a href="/rosetta">the catppuccin rosetta stone</a>
+&middot;
+<a href="/ctp">uhhh</a>
+</nav>
+
+<hr />
+
+<p>you can find me on <a href="https://github.com/backwardspy">GitHub</a>,
+where i help to make it as hard as possible to change the colour of your
+favourite applications.</p>
+
+<p>i am staff at <a href="https://catppuccin.com">Catppuccin</a> and a
+backend developer at <a href="https://bink.com">Bink</a>.</p>
+
+<p>some of my more recent or interesting projects:
+<ul>
+  <li><a href="https://github.com/catppuccin/toolbox/tree/main/whiskers">whiskers</a> - a templating tool to simplify the creation of Catppuccin ports</li>
+  <li><a href="https://github.com/backwardspy/audiovisual-supercollider">audiovisual-supercollider</a> - hide audio inside bitmap images</li>
+  <li><a href="https://github.com/backwardspy/firepower">firepower</a> - a game i made with godot for olcCodeJam2020</li>
+  <li><a href="https://github.com/catppuccin/rust">catppuccin for rust</a></li>
+  <li><a href="https://github.com/catppuccin/python">catppuccin for python</a></li>
+  <li><a href="https://github.com/backwardspy/spacelib2">spacelib2</a> - a gamedev library for the Commodore 64</li>
+</ul>
+</p>
+
+<hr />
+
+<p>when i take photos that i like, i put them on
+<a href="https://500px.com/p/backwardspy">500px</a>. they are mostly birds.</p>
+
+<p>here's one of a pigeon:</p>
+
+<img src="res/img/pigeon.jpg" alt="pigeon" />
+
+<hr />
+
+<p>this site was designed and built using my totally intentional and unique indie
+vanilla lo-js nostalgia-driven frontend software engineering methodology™.</p>
+
+<p>what this means is that i write everything by hand <s>because i'm scared of
+frontend build tools</s> because it conveys a sense of authenticity, and i use
+minimal dependencies <s>because i don't know how to use npm</s> because it makes the
+site faster.</p>
+
+<p>you may ask why even have a site since you clearly don't know what you're
+doing. i think it's important to have a place to call your own on the
+internet, even if it's ugly and doesn't work well on mobile.</p>
+
+<hr />
+
+<img class="vis-light" src="res/img/visitors-latte.png" alt="visitor count (light)"/>
+<img class="vis-dark" src="res/img/visitors-mocha.png" alt="visitor count (dark)"/>
+<p>(that's not a visitor count, it's just a picture.)</p>
+
+<hr />
+
+<div hx-ext="client-side-templates">
+  <table
+    hx-trigger="load"
+    hx-get="https://api.github.com/users/backwardspy/events/public"
+    handlebars-template="gh-activity"
+  >
+  </table>
+
+  {% raw %}
+  <template id="gh-activity">
+    {{#.}}
+      {{#if (eq type "PushEvent")}}
+      <tr>
+        <td><a href="https://github.com/{{repo.name}}">{{repo.name}}</a></td>
+        <td><a class="monospace" href="https://github.com/{{repo.name}}/commit/{{payload.commits.0.sha}}">{{sha8 payload.commits.0.sha}}</td>
+        <td>{{comsg payload.commits.0.message}}</td>
+      </tr>
+      {{/if}}
+    {{/.}}
+  </template>
+  {% endraw %}
+
+  <noscript>
+    <p>if you've got javascript disabled, just pretend there's some github commits here.</p>
+    <p>i hope you're having a good day!</p>
+  </noscript>
+</div>
+
+{% endblock container %}
+
+{% block garbage %}
+<script src="https://unpkg.com/htmx.org"></script>
+<script src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script>
+<script src="https://unpkg.com/handlebars/dist/handlebars.js"></script>
+<script>
+  document.addEventListener('htmx:configRequest', (evt) => { evt.detail.headers = []; });
+  Handlebars.registerHelper("eq", (a, b) => a == b)
+  Handlebars.registerHelper("sha8", (sha) => sha.slice(0, 8))
+  Handlebars.registerHelper("comsg", (msg) => msg.split("\n")[0])
+</script>
+{% endblock garbage %}

@@ -1,0 +1,21 @@
+{% extends "base.j2" %}
+
+{% block styles %}
+<link rel="stylesheet" href="res/css/rosetta.css" />
+{% endblock styles %}
+
+{% block title %}catppuccin rosetta stone{% endblock title %}
+
+{% block container %}
+<h1>the catppuccin stone</h1>
+<div class="stone">
+  {{ inscription(lang="austrian", author="winston", link="https://winston.sh") }}
+  {{ inscription(lang="danish", author="Nyx", link="https://github.com/nyxkrage") }}
+  {{ inscription(lang="english", author="winston", link="https://winston.sh") }}
+  {{ inscription(lang="esperanto", author="pigeon", link="/") }}
+  {{ inscription(lang="glaswegian", author="hammy", link="https://goudham.com") }}
+  {{ inscription(lang="saxon", author="justTOBBI", link="https://justtobbi.is-a.dev") }}
+  {{ inscription(lang="toki-pona", author="pigeon", link="/") }}
+  {{ inscription(lang="welsh", author="Name", link="https://github.com/NamesCode") }}
+</div>
+{% endblock container %}

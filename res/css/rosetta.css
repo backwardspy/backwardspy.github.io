@@ -1,16 +1,6 @@
-:root {
-    --outer-border: 1px solid var(--ctp-mocha-mantle);
-}
-
 div.stone {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    
-    border-radius: 0.5rem;
-    border: var(--outer-border);
-    
-    background-color: var(--ctp-mocha-crust);
-    gap: 1px;
 }
 
 @media (max-width: 768px) {
@@ -25,10 +15,8 @@ div.inscription {
     justify-content: space-between;
     text-align: center;
     padding: 1rem;
-    background-color: #000;
 }
 
 div.inscription>p.credit{
     height: 1rem;
-    border-top: 1px solid var(--ctp-mocha-crust);
 }
