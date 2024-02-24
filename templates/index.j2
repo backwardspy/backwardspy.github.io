@@ -72,44 +72,4 @@
 <img class="vis-dark" src="res/img/visitors-mocha.webp" width="107" height="50" alt="visitor count (dark)" />
 <p>(that's not a visitor count, it's just a picture.)</p>
 
-<hr />
-
-<div hx-ext="client-side-templates">
-  <table hx-trigger="load" hx-get="https://api.github.com/users/backwardspy/events/public"
-    handlebars-template="gh-activity">
-  </table>
-
-  {% raw %}
-  <template id="gh-activity">
-    {{#.}}
-    {{#if (eq type "PushEvent")}}
-    <tr>
-      <td><a href="https://github.com/{{repo.name}}">{{repo.name}}</a></td>
-      <td><a class="monospace" href="https://github.com/{{repo.name}}/commit/{{payload.commits.0.sha}}">{{sha8
-          payload.commits.0.sha}}</td>
-      <td>{{comsg payload.commits.0.message}}</td>
-    </tr>
-    {{/if}}
-    {{/.}}
-  </template>
-  {% endraw %}
-
-  <noscript>
-    <p>if you've got javascript disabled, just pretend there's some github commits here.</p>
-    <p>i hope you're having a good day!</p>
-  </noscript>
-</div>
-
 {% endblock container %}
-
-{% block garbage %}
-<script src="https://unpkg.com/htmx.org@1.9.10/dist/htmx.min.js"></script>
-<script src="https://unpkg.com/htmx.org@1.9.10/dist/ext/client-side-templates.js"></script>
-<script src="https://unpkg.com/handlebars@4.7.8/dist/handlebars.min.js"></script>
-<script>
-  document.addEventListener('htmx:configRequest', (evt) => { evt.detail.headers = []; });
-  Handlebars.registerHelper("eq", (a, b) => a == b)
-  Handlebars.registerHelper("sha8", (sha) => sha.slice(0, 8))
-  Handlebars.registerHelper("comsg", (msg) => msg.split("\n")[0])
-</script>
-{% endblock garbage %}
