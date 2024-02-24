@@ -1,7 +1,8 @@
-use std::{collections::HashMap, fmt::Write, fs, path::Path};
+use std::{collections::HashMap, fs, path::Path};
 
 use color_eyre::Result;
 use copy_dir::copy_dir;
+use maud::html;
 use tera::{Context, Error, Tera, Value};
 
 const SOURCES: &[&str] = &["ctp.j2", "index.j2", "rosetta.j2"];
@@ -25,23 +26,20 @@ fn inscription(args: &HashMap<String, Value>) -> Result<Value, Error> {
         .ok_or(Error::msg("expected link to be a string"))?;
 
     let path = Path::new("inscriptions").join(lang);
-    let content = fs::read_to_string(path)?
-        .lines()
-        .fold(String::new(), |mut acc, line| {
-            let _ = write!(acc, "<p>{line}</p>");
-            acc
-        });
+    let element = html! {
+        div.inscription {
+            @for line in fs::read_to_string(path)?.lines() {
+                p { (line) }
+            }
+            p.credit {
+                small {
+                    (lang.replace('-', " ")) " translation by " a href=(link) { (author) }
+                }
+            }
+        }
+    };
 
-    let lang = lang.replace('-', " ");
-
-    let element = format!(
-        r#"<div class="inscription">
-    {content}
-    <p class="credit"><small>{lang} translation by <a href="{link}">{author}</a></small></p>
-</div>"#
-    );
-
-    Ok(Value::String(element))
+    Ok(Value::String(element.into_string()))
 }
 
 fn main() -> Result<()> {
