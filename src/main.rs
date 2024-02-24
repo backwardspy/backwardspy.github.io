@@ -71,7 +71,7 @@ fn main() -> Result<()> {
     println!("copying cruft");
     for cruft in CRUFT {
         let dest = out_dir.join(cruft);
-        println!(" - {}", dest.display());
+        println!(" - {} → {}", cruft, dest.display());
         fs::copy(cruft, dest)?;
     }
 
