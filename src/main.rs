@@ -2,52 +2,57 @@ use std::{collections::HashMap, fs, path::Path};
 
 use color_eyre::Result;
 use copy_dir::copy_dir;
-use maud::html;
 use tera::{Context, Error, Tera, Value};
 
 const SOURCES: &[&str] = &["ctp.j2", "index.j2", "rosetta.j2"];
 const CRUFT: &[&str] = &["favicon.ico"];
 
-fn inscription(args: &HashMap<String, Value>) -> Result<Value, Error> {
-    let author = args
-        .get("author")
-        .ok_or(Error::msg("expected author parameter"))?
-        .as_str()
-        .ok_or(Error::msg("expected author to be a string"))?;
-    let lang = args
-        .get("lang")
-        .ok_or(Error::msg("expected lang parameter"))?
-        .as_str()
-        .ok_or(Error::msg("expected lang to be a string"))?;
-    let link = args
-        .get("link")
-        .ok_or(Error::msg("expected link parameter"))?
-        .as_str()
-        .ok_or(Error::msg("expected link to be a string"))?;
+#[derive(serde::Serialize)]
+struct Inscription {
+    content: &'static str,
+    language: &'static str,
+    author: &'static str,
+    link: &'static str,
+}
 
-    let path = Path::new("inscriptions").join(lang);
-    let element = html! {
-        div.inscription {
-            @for line in fs::read_to_string(path)?.lines() {
-                p { (line) }
+const fn inscriptions() -> [Inscription; 8] {
+    macro_rules! inscription {
+        ($lang:literal, $author:literal, $link:literal) => {
+            Inscription {
+                content: include_str!(concat!("../inscriptions/", $lang)),
+                language: $lang,
+                author: $author,
+                link: $link,
             }
-            p.credit {
-                small {
-                    (lang.replace('-', " ")) " translation by " a href=(link) { (author) }
-                }
-            }
-        }
-    };
+        };
+    }
+    [
+        inscription!("austrian", "winston", "https://winston.sh"),
+        inscription!("danish", "Nyx", "https://github.com/nyxkrage"),
+        inscription!("english", "winston", "https://winston.sh"),
+        inscription!("esperanto", "pigeon", "/"),
+        inscription!("glaswegian", "hammy", "https://goudham.com"),
+        inscription!("saxon", "justTOBBI", "https://justtobbi.is-a.dev"),
+        inscription!("toki-pona", "pigeon", "/"),
+        inscription!("welsh", "Name", "https://github.com/NamesCode"),
+    ]
+}
 
-    Ok(Value::String(element.into_string()))
+fn lines(value: &Value, _args: &HashMap<String, Value>) -> Result<Value, Error> {
+    let value = value
+        .as_str()
+        .ok_or_else(|| Error::msg("expected string value"))?;
+    let lines = value.lines().collect::<Vec<_>>();
+    Ok(lines.into())
 }
 
 fn main() -> Result<()> {
     color_eyre::install()?;
 
     let mut tera = Tera::new("templates/**.j2")?;
-    tera.register_function("inscription", Box::new(inscription));
-    let context = Context::new();
+    tera.register_filter("lines", Box::new(lines));
+    let mut context = Context::new();
+    context.insert("inscriptions", &inscriptions());
 
     let out_dir = Path::new("dist");
 

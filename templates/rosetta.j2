@@ -9,13 +9,17 @@
 {% block container %}
 <h1>the catppuccin stone</h1>
 <div class="stone">
-  {{ inscription(lang="austrian", author="winston", link="https://winston.sh") }}
-  {{ inscription(lang="danish", author="Nyx", link="https://github.com/nyxkrage") }}
-  {{ inscription(lang="english", author="winston", link="https://winston.sh") }}
-  {{ inscription(lang="esperanto", author="pigeon", link="/") }}
-  {{ inscription(lang="glaswegian", author="hammy", link="https://goudham.com") }}
-  {{ inscription(lang="saxon", author="justTOBBI", link="https://justtobbi.is-a.dev") }}
-  {{ inscription(lang="toki-pona", author="pigeon", link="/") }}
-  {{ inscription(lang="welsh", author="Name", link="https://github.com/NamesCode") }}
+  {% for inscription in inscriptions -%}
+  <div class="inscription">
+    {% for line in inscription.content | lines -%}
+    <p>{{ line }}</p>
+    {% endfor -%}
+    <p class="credit">
+      <small>
+        {{ inscription.language }} translation by <a href="{{ inscription.link }}">{{ inscription.author }}</a>
+      </small>
+    </p>
+  </div>
+  {%- endfor %}
 </div>
 {% endblock container %}
