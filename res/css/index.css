@@ -1,0 +1,67 @@
+:root {
+    --px: 0px;
+    --py: 0px;
+}
+
+a.card-link {
+    color: var(--c-text);
+    text-decoration: none;
+    perspective: 800px;
+}
+
+div.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 1rem;
+}
+
+div.card {
+    position: relative;
+    width: 300px;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: 0.2s ease scale;
+}
+
+div.card:hover {
+    transform: rotateX(var(--dy)) rotateY(var(--dx));
+    scale: 1.05;
+}
+
+div.card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 0.5rem;
+    pointer-events: none;
+    background: radial-gradient(400px circle at var(--px) var(--py), rgba(255, 255, 255, 0.4), transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+    div.card {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    div.card::after {
+        background: radial-gradient(400px circle at var(--px) var(--py), rgba(255, 255, 255, 0.2), transparent);
+    }
+}
+
+div.stone {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+div.inscription {
+    padding: 0.2rem;
+}
+
+span.oversize {
+    font-size: 3rem;
+}

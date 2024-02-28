@@ -1,6 +1,7 @@
 div.stone {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
 }
 
 @media (max-width: 768px) {
@@ -15,8 +16,17 @@ div.inscription {
     justify-content: space-between;
     text-align: center;
     padding: 1rem;
+
+    border-radius: 1rem;
+    background-color: rgba(255, 220, 255, 0.2);
 }
 
-div.inscription>p.credit{
+@media (prefers-color-scheme: dark) {
+    div.inscription {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+}
+
+div.inscription>p.credit {
     height: 1rem;
 }

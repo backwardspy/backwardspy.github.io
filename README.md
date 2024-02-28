@@ -11,16 +11,13 @@ so, i made a bad one so i can have the worst of both worlds.
 run `cargo run` to build the site, output goes in `dist/`.
 
 i'd recommend using [cargo watch](https://watchexec.github.io/#cargo-watch) to
-rebuild automatically:
+rebuild automatically.
+
+for serving, any dev server that can rewrite `.html` URLs should work, i use [miniserve](https://github.com/svenstaro/miniserve).
+
+to launch these tools via [just](https://github.com/casey/just):
 
 ```console
-cargo watch -i dist -x run
-```
-
-any dev server that can rewrite `.html` URLs should work, i use [miniserve](https://github.com/svenstaro/miniserve).
-
-to launch miniserve via [just](https://github.com/casey/just):
-
-```console
+just watch
 just serve
 ```

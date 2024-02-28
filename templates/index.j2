@@ -1,61 +1,91 @@
 {% extends "base.j2" %}
 
-{% block container %}
+{% block styles %}
+<link rel="stylesheet" href="/res/css/index.css">
+{% endblock styles %}
 
-<div id="top">
-  <img id="pigeon" src="res/img/avatar.webp" width="64" height="64" />
-  <div>
-    <h1>pigeon</h1>
-    <sub>aka backwardspy</sub>
-  </div>
-  <em>best viewed at 1024x768</em>
+{% block body %}
+
+<div class="title-block">
+  <h1 class="title"><span>welcome to</span> <span><span class="magic">the pigeon zone</span>.</span></h1>
+  <h2 class="subtitle">please enjoy your stay</h2>
 </div>
 
-<nav>
-  <a href="/">index</a>
-  &middot;
-  <a href="/rosetta">the catppuccin rosetta stone</a>
-  &middot;
-  <a href="/ctp">uhhh</a>
-</nav>
+<h3>we've got:</h3>
 
-<hr />
+<div class="cards">
 
-<p>you can find me on <a href="https://github.com/backwardspy">GitHub</a>,
-  where i help to make it as hard as possible to change the colour of your
-  favourite applications.</p>
+  <a href="/rosetta" class="card-link">
+    <div class="card">
+      <h4>the rosetta stone</h4>
 
-<p>i am staff at <a href="https://catppuccin.com">Catppuccin</a> and a
-  backend developer at <a href="https://bink.com">Bink</a>.</p>
+      <div class="stone">
+        {% for inscription in inscriptions %}
+        <div class="inscription">
+          <p>{{ inscription.language }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </a>
 
-<p>some of my more recent or interesting projects:
-<ul>
-  <li><a href="https://github.com/catppuccin/toolbox/tree/main/whiskers">whiskers</a> - a templating tool to simplify
-    the creation of Catppuccin ports</li>
-  <li><a href="https://github.com/backwardspy/audiovisual-supercollider">audiovisual-supercollider</a> - hide audio
-    inside bitmap images</li>
-  <li><a href="https://github.com/backwardspy/firepower">firepower</a> - a game i made with godot for olcCodeJam2020
-  </li>
-  <li><a href="https://github.com/catppuccin/rust">catppuccin for rust</a></li>
-  <li><a href="https://github.com/catppuccin/python">catppuccin for python</a></li>
-  <li><a href="https://github.com/backwardspy/spacelib2">spacelib2</a> - a gamedev library for the Commodore 64</li>
-</ul>
-</p>
+  <a href="https://github.com/backwardspy" class="card-link">
+    <div class="card">
+      <h4>a github page</h4>
+      <p>(where i make it as difficult as possible to change the colour of your favourite application)</p>
+    </div>
+  </a>
 
-<hr />
+  <a href="/ctp" class="card-link">
+    <div class="card">
+      <h4>some dancing bois</h4>
+      <span class="oversize">🕺🕺🕺</span>
+    </div>
+  </a>
 
-<p>when i take photos that i like, i put them on
-  <a href="https://500px.com/p/backwardspy">500px</a>. they are mostly birds.
-</p>
+</div>
 
-<p>here's one of a pigeon:</p>
+{% endblock body %}
 
-<img src="res/img/pigeon.webp" width="800" height="533" alt="pigeon" />
+{% block garbage %}
+<script>
+  let rect;
 
-<hr />
+  function mouseenter(ev) {
+    let card = ev.currentTarget;
+    rect = card.getBoundingClientRect();
+  }
 
-<img class="vis-light" src="res/img/visitors-latte.webp" width="107" height="50" alt="visitor count (light)" />
-<img class="vis-dark" src="res/img/visitors-mocha.webp" width="107" height="50" alt="visitor count (dark)" />
-<p>(that's not a visitor count, it's just a picture.)</p>
+  function mousemove(ev) {
+    const deflect = 10;
+    let card = ev.currentTarget;
+    let halfW = rect.width / 2;
+    let halfH = rect.height / 2;
+    let midX = rect.left + halfW;
+    let midY = rect.top + halfH;
+    let dx = -deflect * (ev.clientX - midX) / halfW;
+    let dy = deflect * (ev.clientY - midY) / halfH;
+    card.style.setProperty('--dx', `${dx}deg`);
+    card.style.setProperty('--dy', `${dy}deg`);
 
-{% endblock container %}
+    card.style.setProperty('--px', `${dx * 15}px`);
+    card.style.setProperty('--py', `${dy * -15}px`);
+  }
+
+  function mouseleave(ev) {
+    let card = ev.currentTarget;
+    card.style.setProperty('--dx', '0deg');
+    card.style.setProperty('--dy', '0deg');
+    card.style.setProperty('--px', '0px');
+    card.style.setProperty('--py', '0px');
+    rect = null;
+  }
+
+  let cards = document.querySelectorAll('div.card');
+  for (let card of cards) {
+    card.addEventListener('mouseenter', mouseenter);
+    card.addEventListener('mousemove', mousemove);
+    card.addEventListener('mouseleave', mouseleave);
+  }
+</script>
+{% endblock garbage %}

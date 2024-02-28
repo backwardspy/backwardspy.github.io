@@ -1,58 +1,22 @@
-use std::{collections::HashMap, fs, path::Path};
+use std::{fs, path::Path};
 
 use color_eyre::Result;
 use copy_dir::copy_dir;
-use tera::{Context, Error, Tera, Value};
+use tera::{Context, Tera};
+
+mod filters;
+mod inscriptions;
 
 const SOURCES: &[&str] = &["ctp.j2", "index.j2", "rosetta.j2"];
 const CRUFT: &[&str] = &["favicon.ico"];
-
-#[derive(serde::Serialize)]
-struct Inscription {
-    content: &'static str,
-    language: &'static str,
-    author: &'static str,
-    link: &'static str,
-}
-
-const fn inscriptions() -> [Inscription; 8] {
-    macro_rules! inscription {
-        ($lang:literal, $author:literal, $link:literal) => {
-            Inscription {
-                content: include_str!(concat!("../inscriptions/", $lang)),
-                language: $lang,
-                author: $author,
-                link: $link,
-            }
-        };
-    }
-    [
-        inscription!("austrian", "winston", "https://winston.sh"),
-        inscription!("danish", "Nyx", "https://github.com/nyxkrage"),
-        inscription!("english", "winston", "https://winston.sh"),
-        inscription!("esperanto", "pigeon", "/"),
-        inscription!("glaswegian", "hammy", "https://goudham.com"),
-        inscription!("saxon", "justTOBBI", "https://justtobbi.is-a.dev"),
-        inscription!("toki-pona", "pigeon", "/"),
-        inscription!("welsh", "Name", "https://github.com/NamesCode"),
-    ]
-}
-
-fn lines(value: &Value, _args: &HashMap<String, Value>) -> Result<Value, Error> {
-    let value = value
-        .as_str()
-        .ok_or_else(|| Error::msg("expected string value"))?;
-    let lines = value.lines().collect::<Vec<_>>();
-    Ok(lines.into())
-}
 
 fn main() -> Result<()> {
     color_eyre::install()?;
 
     let mut tera = Tera::new("templates/**.j2")?;
-    tera.register_filter("lines", Box::new(lines));
+    tera.register_filter("lines", Box::new(filters::lines));
     let mut context = Context::new();
-    context.insert("inscriptions", &inscriptions());
+    context.insert("inscriptions", &inscriptions::all());
 
     let out_dir = Path::new("dist");
 

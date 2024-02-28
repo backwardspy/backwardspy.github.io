@@ -1,12 +1,12 @@
 {% extends "base.j2" %}
 
 {% block styles %}
-<link rel="stylesheet" href="res/css/rosetta.css" />
+<link rel="stylesheet" href="/res/css/rosetta.css" />
 {% endblock styles %}
 
 {% block title %}catppuccin rosetta stone{% endblock title %}
 
-{% block container %}
+{% block body %}
 <h1>the catppuccin stone</h1>
 <div class="stone">
   {% for inscription in inscriptions -%}
@@ -22,4 +22,4 @@
   </div>
   {%- endfor %}
 </div>
-{% endblock container %}
+{% endblock body %}
