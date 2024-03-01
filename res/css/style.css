@@ -31,8 +31,10 @@ body {
   background-color: var(--c-bg1);
   background: linear-gradient(19deg, var(--c-bg1) 0%, var(--c-bg2) 100%);
   color: var(--c-text);
+  max-width: 1200px;
   height: 100vh;
   padding: 3rem;
+  margin: 0 auto;
 }
 
 div.title-block {
