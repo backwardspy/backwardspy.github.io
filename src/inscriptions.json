@@ -1,0 +1,74 @@
+[
+    {
+        "language": "Austrian",
+        "author": "winston",
+        "link": "https://winston.sh",
+        "lines": [
+            "Servus, i bin winston. I glab Catppuccin is klass wei die Catppuccin Leut leiwand, verständnisvui, hüfsbereit san, und die Farbn san zum abbusseln.",
+            "Nyx hosst catppuccin, glab I, weil er glabt dass langweilig is, und wiston is a obzwickta."
+        ]
+    },
+    {
+        "language": "Danish",
+        "author": "Nyx",
+        "link": "https://github.com/nyxkrage",
+        "lines": [
+            "Davs, Jeg hedder Nyx. Jeg sysnes Catppucin er fantastisk fordi fællesskabet omkring Catppuccin er så venlig, forståelig, hjælpsomme og farverne er smukke.",
+            "Jeg tror Nyx hader Catppuccin fordi han synes det er kedeligt, og Winston er kort."
+        ]
+    },
+    {
+        "language": "English",
+        "author": "winston",
+        "link": "https://winston.sh",
+        "lines": [
+            "hello, I'm winston. i think Catppuccin is amazing because the Catppuccin community is kind, understanding, helpful, and the colors are beautiful.",
+            "nyx hates Catppuccin because i think he thinks it's boring, and winston is short."
+        ]
+    },
+    {
+        "language": "Esperanto",
+        "author": "pigeon",
+        "link": "/",
+        "lines": [
+            "Saluton, mi estas kolombo. Laŭ mi Katpuĉino estas mirinda, ĉar la katpuĉina komunumo estas afabla, komprenema, helpema, kaj la koloroj estas belaj.",
+            "Nyx malamas Katpuĉinon ĉar, laŭ mi, li pensas ke ĝi estas enua, kaj winston estas malalta."
+        ]
+    },
+    {
+        "language": "Glaswegian",
+        "author": "hammy",
+        "link": "https://goudham.com",
+        "lines": [
+            "police?",
+            "mate, we *are* the police."
+        ]
+    },
+    {
+        "language": "Saxon",
+        "author": "justTOBBI",
+        "link": "https://justtobbi.is-a.dev",
+        "lines": [
+            "Morschn, isch bin dor Tobi. Isch glob Gadbudschin ist echt einmahfrei weil die Midglieder einfach ned, vorschdändnisvoll, hilfreisch sin un die Farbn och eschd wundorschön sin.",
+            "Nyx hasst Gadbudschin, weil er dengt dass es langweilisch ist und winston gleen is."
+        ]
+    },
+    {
+        "language": "toki pona",
+        "author": "pigeon",
+        "link": "/",
+        "lines": [
+            "toki. mi waso. kulupu Kapusin li pona tawa mi. jan kulupu li pana e pona e sona tawa jan ante. kule Kapusin li pona tawa oko mi.",
+            "kulupu Kapusin li ike tawa jan Nise. mi la ona li pilin e ni: pali ala li lon ala kulupu. jan Winson li lili."
+        ]
+    },
+    {
+        "language": "Welsh",
+        "author": "Name",
+        "link": "https://github.com/NamesCode",
+        "lines": [
+            "Shwmae, Garfunkle ydy i. Yn fy marn i Catppuccin yn bendigedig achos mae Catppuccin cymuned yn caredig, ddeallus, chymwynasgar a mae'r lliwiau'n bert.",
+            "Mae Nyx yn casau Catppuccin achos yn fy marn i Nyx, Catppuccin yn ddiflas a winstons yn fyr."
+        ]
+    }
+]

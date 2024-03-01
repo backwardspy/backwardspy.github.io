@@ -1,0 +1,65 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+import inscriptions from "../inscriptions.json";
+---
+
+<Layout title="catppuccin rosetta stone · pigeon">
+    <main>
+        <h1>the catppuccin stone</h1>
+        <div class="stone">
+            {
+                inscriptions.map((inscription) => (
+                    <div class="inscription">
+                        {inscription.lines.map((line) => (
+                            <p>{line}</p>
+                        ))}
+                        <p class="credit">
+                            <small>
+                                {inscription.language} translation by{" "}
+                                <a href={inscription.link}>
+                                    {inscription.author}
+                                </a>
+                            </small>
+                        </p>
+                    </div>
+                ))
+            }
+        </div>
+    </main>
+</Layout>
+
+<style>
+    div.stone {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+        div.stone {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    div.inscription {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        text-align: center;
+        padding: 1rem;
+
+        border-radius: 1rem;
+        background-color: rgba(255, 220, 255, 0.2);
+    }
+
+    @media (prefers-color-scheme: dark) {
+        div.inscription {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    div.inscription > p.credit {
+        height: 1rem;
+    }
+</style>
