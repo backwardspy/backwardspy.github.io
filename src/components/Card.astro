@@ -1,0 +1,124 @@
+---
+const { href, title, external } = Astro.props;
+---
+
+<a href={href} target={external ? "_blank" : "_self"} class="card-link">
+    <div class="card">
+        <h4>{title}</h4>
+        <slot />
+    </div>
+</a>
+
+<script>
+    let rect: DOMRect | null = null;
+
+    function mouseenter(ev: Event) {
+        const card = ev.currentTarget;
+        if (card === null || !(card instanceof HTMLElement)) {
+            return;
+        }
+        rect = card.getBoundingClientRect();
+    }
+
+    function mousemove(_ev: Event) {
+        const ev = _ev as MouseEvent;
+        if (rect === null) {
+            return;
+        }
+        const deflect = 10;
+        const card = ev.currentTarget;
+        if (card === null || !(card instanceof HTMLElement)) {
+            return;
+        }
+        let halfW = rect.width / 2;
+        let halfH = rect.height / 2;
+        let midX = rect.left + halfW;
+        let midY = rect.top + halfH;
+        let dx = (-deflect * (ev.clientX - midX)) / halfW;
+        let dy = (deflect * (ev.clientY - midY)) / halfH;
+        card.style.setProperty("--dx", `${dx}deg`);
+        card.style.setProperty("--dy", `${dy}deg`);
+
+        card.style.setProperty("--px", `${dx * 15}px`);
+        card.style.setProperty("--py", `${dy * -15}px`);
+    }
+
+    function mouseleave(ev: Event) {
+        const card = ev.currentTarget;
+        if (card === null || !(card instanceof HTMLElement)) {
+            return;
+        }
+        card.style.setProperty("--dx", "0deg");
+        card.style.setProperty("--dy", "0deg");
+        card.style.setProperty("--px", "0px");
+        card.style.setProperty("--py", "0px");
+        rect = null;
+    }
+
+    const cards = document.querySelectorAll("div.card");
+    for (const card of cards) {
+        card.addEventListener("mouseenter", mouseenter);
+        card.addEventListener("mousemove", mousemove);
+        card.addEventListener("mouseleave", mouseleave);
+    }
+</script>
+
+<style>
+    :root {
+        --px: 0px;
+        --py: 0px;
+    }
+
+    a.card-link {
+        color: var(--c-fg);
+        text-decoration: none;
+        perspective: 800px;
+    }
+
+    div.card {
+        position: relative;
+        width: 300px;
+        height: 100%;
+        background-color: var(--c-bg);
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 0.5rem;
+        border: 1px solid var(--c-edge);
+        text-align: center;
+        transition: 0.2s ease;
+        transition-property: scale, border;
+    }
+
+    div.card:hover {
+        transform: rotateX(var(--dy)) rotateY(var(--dx));
+        scale: 1.05;
+        border: 1px solid var(--c-pink1);
+    }
+
+    div.card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 0.5rem;
+        pointer-events: none;
+        background: radial-gradient(
+            400px circle at var(--px) var(--py),
+            rgba(255, 255, 255, 0.5),
+            transparent
+        );
+    }
+
+    @media (prefers-color-scheme: dark) {
+        div.card {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        div.card::after {
+            background: radial-gradient(
+                400px circle at var(--px) var(--py),
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+        }
+    }
+</style>

@@ -1,4 +1,5 @@
 ---
+import Card from "../components/Card.astro";
 import Layout from "../layouts/Layout.astro";
 
 import inscriptions from "../inscriptions.json";
@@ -15,159 +16,42 @@ import inscriptions from "../inscriptions.json";
 
 	<div class="container">
 		<div class="cards">
-			<a href="/rosetta" class="card-link">
-				<div class="card">
-					<h4>the rosetta stone</h4>
-
-					<div class="stone">
-						{
-							inscriptions.map((inscription) => (
-								<div class="inscription">
-									<p>{inscription.language}</p>
-								</div>
-							))
-						}
-					</div>
+			<Card href="/rosetta" title="the rosetta stone">
+				<div class="stone">
+					{
+						inscriptions.map((inscription) => (
+							<div class="inscription">
+								<p>{inscription.language}</p>
+							</div>
+						))
+					}
 				</div>
-			</a>
+			</Card>
 
-			<a href="https://github.com/backwardspy" class="card-link">
-				<div class="card">
-					<h4>a github page</h4>
-					<p>
-						(where i make it as difficult as possible to change the
-						colour of your favourite application)
-					</p>
-				</div>
-			</a>
+			<Card href="/ctp" title="some dancing bois">
+				<span class="oversize">🕺🕺🕺</span>
+			</Card>
 
-			<a href="/ctp" class="card-link">
-				<div class="card">
-					<h4>some dancing bois</h4>
-					<span class="oversize">🕺🕺🕺</span>
-				</div>
-			</a>
+			<Card
+				href="https://github.com/backwardspy"
+				title="a github page"
+				external="true"
+			>
+				<p>
+					(where i make it as difficult as possible to change the
+					colour of your favourite application)
+				</p>
+			</Card>
 		</div>
 	</div>
 </Layout>
-<script>
-	let rect: DOMRect | null = null;
-
-	function mouseenter(ev: Event) {
-		const card = ev.currentTarget;
-		if (card === null || !(card instanceof HTMLElement)) {
-			return;
-		}
-		rect = card.getBoundingClientRect();
-	}
-
-	function mousemove(_ev: Event) {
-		const ev = _ev as MouseEvent;
-		if (rect === null) {
-			return;
-		}
-		const deflect = 10;
-		const card = ev.currentTarget;
-		if (card === null || !(card instanceof HTMLElement)) {
-			return;
-		}
-		let halfW = rect.width / 2;
-		let halfH = rect.height / 2;
-		let midX = rect.left + halfW;
-		let midY = rect.top + halfH;
-		let dx = (-deflect * (ev.clientX - midX)) / halfW;
-		let dy = (deflect * (ev.clientY - midY)) / halfH;
-		card.style.setProperty("--dx", `${dx}deg`);
-		card.style.setProperty("--dy", `${dy}deg`);
-
-		card.style.setProperty("--px", `${dx * 15}px`);
-		card.style.setProperty("--py", `${dy * -15}px`);
-	}
-
-	function mouseleave(ev: Event) {
-		const card = ev.currentTarget;
-		if (card === null || !(card instanceof HTMLElement)) {
-			return;
-		}
-		card.style.setProperty("--dx", "0deg");
-		card.style.setProperty("--dy", "0deg");
-		card.style.setProperty("--px", "0px");
-		card.style.setProperty("--py", "0px");
-		rect = null;
-	}
-
-	const cards = document.querySelectorAll("div.card");
-	for (const card of cards) {
-		card.addEventListener("mouseenter", mouseenter);
-		card.addEventListener("mousemove", mousemove);
-		card.addEventListener("mouseleave", mouseleave);
-	}
-</script>
 
 <style>
-	:root {
-		--px: 0px;
-		--py: 0px;
-	}
-
-	a.card-link {
-		color: var(--c-fg);
-		text-decoration: none;
-		perspective: 800px;
-	}
-
 	div.cards {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-evenly;
 		gap: 1rem;
-	}
-
-	div.card {
-		position: relative;
-		width: 300px;
-		height: 100%;
-		background-color: var(--c-bg);
-		padding: 1rem;
-		margin: 1rem 0;
-		border-radius: 0.5rem;
-		border: 1px solid var(--c-edge);
-		text-align: center;
-		transition: 0.2s ease;
-		transition-property: scale, border;
-	}
-
-	div.card:hover {
-		transform: rotateX(var(--dy)) rotateY(var(--dx));
-		scale: 1.05;
-		border: 1px solid var(--c-pink1);
-	}
-
-	div.card::after {
-		content: "";
-		position: absolute;
-		inset: 0;
-		border-radius: 0.5rem;
-		pointer-events: none;
-		background: radial-gradient(
-			400px circle at var(--px) var(--py),
-			rgba(255, 255, 255, 0.5),
-			transparent
-		);
-	}
-
-	@media (prefers-color-scheme: dark) {
-		div.card {
-			background-color: rgba(255, 255, 255, 0.03);
-		}
-
-		div.card::after {
-			background: radial-gradient(
-				400px circle at var(--px) var(--py),
-				rgba(255, 255, 255, 0.1),
-				transparent
-			);
-		}
 	}
 
 	div.stone {
