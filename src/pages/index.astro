@@ -5,17 +5,15 @@ import inscriptions from "../inscriptions.json";
 ---
 
 <Layout title="index">
-	<main>
-		<div class="title-block">
-			<h1 class="title">
-				<span>welcome to</span>
-				<span><span class="magic">the pigeon zone</span>.</span>
-			</h1>
-			<h2 class="subtitle">please enjoy your stay</h2>
-		</div>
+	<div slot="header" class="title-block">
+		<h1 class="title">
+			<span>welcome to</span>
+			<span><span class="magic">the pigeon zone</span>.</span>
+		</h1>
+		<h2 class="subtitle">please enjoy your stay</h2>
+	</div>
 
-		<h3>we've got:</h3>
-
+	<div class="container">
 		<div class="cards">
 			<a href="/rosetta" class="card-link">
 				<div class="card">
@@ -50,7 +48,7 @@ import inscriptions from "../inscriptions.json";
 				</div>
 			</a>
 		</div>
-	</main>
+	</div>
 </Layout>
 <script>
 	let rect: DOMRect | null = null;
@@ -113,7 +111,7 @@ import inscriptions from "../inscriptions.json";
 	}
 
 	a.card-link {
-		color: var(--c-text);
+		color: var(--c-fg);
 		text-decoration: none;
 		perspective: 800px;
 	}
@@ -129,18 +127,20 @@ import inscriptions from "../inscriptions.json";
 		position: relative;
 		width: 300px;
 		height: 100%;
-		background-color: rgba(255, 255, 255, 0.1);
+		background-color: var(--c-bg);
 		padding: 1rem;
 		margin: 1rem 0;
 		border-radius: 0.5rem;
-		box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.1);
+		border: 1px solid var(--c-edge);
 		text-align: center;
-		transition: 0.2s ease scale;
+		transition: 0.2s ease;
+		transition-property: scale, border;
 	}
 
 	div.card:hover {
 		transform: rotateX(var(--dy)) rotateY(var(--dx));
 		scale: 1.05;
+		border: 1px solid var(--c-pink1);
 	}
 
 	div.card::after {
@@ -151,20 +151,20 @@ import inscriptions from "../inscriptions.json";
 		pointer-events: none;
 		background: radial-gradient(
 			400px circle at var(--px) var(--py),
-			rgba(255, 255, 255, 0.4),
+			rgba(255, 255, 255, 0.5),
 			transparent
 		);
 	}
 
 	@media (prefers-color-scheme: dark) {
 		div.card {
-			background-color: rgba(0, 0, 0, 0.1);
+			background-color: rgba(255, 255, 255, 0.03);
 		}
 
 		div.card::after {
 			background: radial-gradient(
 				400px circle at var(--px) var(--py),
-				rgba(255, 255, 255, 0.2),
+				rgba(255, 255, 255, 0.1),
 				transparent
 			);
 		}

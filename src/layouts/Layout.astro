@@ -12,13 +12,25 @@ const { title } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>{title}</title>
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link
+			rel="stylesheet"
+			href="https://unpkg.com/normalize.css@8.0.1/normalize.css"
+		/>
+		<title>{title} &middot; pigeon</title>
 	</head>
 
 	<body>
-		<a href="/"><img src="/img/avatar.webp" /></a>
+		<header>
+			<div class="container">
+				<a href="/"><img src="/img/avatar.webp" /></a>
+				<slot name="header" />
+			</div>
+		</header>
 
-		<slot />
+		<main>
+			<slot />
+		</main>
 
 		<p
 			aria-hidden="true"
@@ -32,25 +44,28 @@ const { title } = Astro.props;
 
 <style is:global>
 	:root {
-		--c-bg1: #faaca8;
-		--c-bg2: #ddd6f3;
-		--c-fg1: #4158d0;
-		--c-fg2: #c850c0;
-		--c-text: #302020;
+		--c-pink1: #f093fb;
+		--c-pink2: #f5576c;
+
+		--c-dark: #18171a;
+		--c-light: #f5f5fa;
+
+		--c-bg: var(--c-light);
+		--c-fg: var(--c-dark);
+		--c-edge: #e4e4e9;
 	}
 
 	@media (prefers-color-scheme: dark) {
 		:root {
-			--c-bg1: #4158d0;
-			--c-bg2: #c850c0;
-			--c-fg1: #faaca8;
-			--c-fg2: #cac0f0;
-			--c-text: #f0e0e0;
+			--c-bg: var(--c-dark);
+			--c-fg: var(--c-light);
+			--c-edge: #2c2b33;
 		}
 	}
 
 	html {
 		box-sizing: border-box;
+		scrollbar-gutter: stable both-edges;
 	}
 
 	*,
@@ -61,18 +76,18 @@ const { title } = Astro.props;
 
 	body {
 		font-family: sans-serif;
-		background-color: var(--c-bg1);
-		background: linear-gradient(19deg, var(--c-bg1) 0%, var(--c-bg2) 100%);
-		color: var(--c-text);
-		max-width: 1200px;
-		height: 100vh;
+		background-color: var(--c-bg);
+		color: var(--c-fg);
+	}
+
+	div.container {
 		padding: 3rem;
+		max-width: 1200px;
 		margin: 0 auto;
 	}
 
 	div.title-block {
 		max-width: fit-content;
-		margin-bottom: 5rem;
 	}
 
 	h1.title {
@@ -110,13 +125,13 @@ const { title } = Astro.props;
 	}
 
 	a {
-		color: var(--c-fg1);
+		color: var(--c-pink1);
 		text-decoration: none;
 		transition: 0.1s ease;
 	}
 
 	a:hover {
-		color: var(--c-fg2);
+		color: var(--c-pink2);
 		text-decoration: underline;
 	}
 
@@ -126,12 +141,12 @@ const { title } = Astro.props;
 	}
 
 	.magic {
-		background-color: var(--c-fg1);
+		background-color: var(--c-pink1);
 		background: linear-gradient(
 			43deg,
-			var(--c-fg1) 0%,
-			var(--c-fg2) 50%,
-			var(--c-fg1) 100%
+			var(--c-pink1) 0%,
+			var(--c-pink2) 50%,
+			var(--c-pink1) 100%
 		);
 		background-size: 200% 100%;
 		background-clip: text;

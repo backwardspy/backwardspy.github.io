@@ -4,9 +4,12 @@ import Layout from "../layouts/Layout.astro";
 import inscriptions from "../inscriptions.json";
 ---
 
-<Layout title="catppuccin rosetta stone · pigeon">
-    <main>
-        <h1>the catppuccin stone</h1>
+<Layout title="rosetta stone">
+    <div slot="header" class="title-block">
+        <h1 class="title">the catppuccin stone</h1>
+    </div>
+
+    <div class="container">
         <div class="stone">
             {
                 inscriptions.map((inscription) => (
@@ -26,7 +29,7 @@ import inscriptions from "../inscriptions.json";
                 ))
             }
         </div>
-    </main>
+    </div>
 </Layout>
 
 <style>
@@ -50,12 +53,12 @@ import inscriptions from "../inscriptions.json";
         padding: 1rem;
 
         border-radius: 1rem;
-        background-color: rgba(255, 220, 255, 0.2);
+        background-color: rgba(0, 0, 0, 0.03);
     }
 
     @media (prefers-color-scheme: dark) {
         div.inscription {
-            background-color: rgba(0, 0, 0, 0.2);
+            background-color: rgba(255, 255, 255, 0.05);
         }
     }
 
