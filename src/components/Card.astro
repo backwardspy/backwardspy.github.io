@@ -1,15 +1,25 @@
 ---
-const { href, title, external } = Astro.props;
+import { Icon } from "astro-icon/components";
+
+interface Props {
+    href: string;
+    title: string;
+    icon: string;
+    external?: boolean;
+}
+
+const { href, title, icon, external }: Props = Astro.props;
 ---
 
 <a href={href} target={external ? "_blank" : "_self"} class="card-link">
     <div class="card">
-        <h4>{title}</h4>
+        <h1>{title}</h1>
+        <p><Icon name={icon} /></p>
         <slot />
     </div>
 </a>
 
-<style>
+<style lang="css">
     :root {
         --px: 0px;
         --py: 0px;
@@ -68,6 +78,14 @@ const { href, title, external } = Astro.props;
                 transparent
             );
         }
+    }
+
+    div.card > h1 {
+        font-size: 1.5rem;
+    }
+
+    [data-icon] {
+        font-size: 6rem;
     }
 </style>
 
