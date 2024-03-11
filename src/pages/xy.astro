@@ -1,0 +1,264 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const examples = [
+    "((x-128)*64)%(y-128)",
+    "(x^y)%9",
+    "(x*3)^(y*3)",
+    "((x|y)%15)*16",
+    "((x-y)!2)/32",
+];
+---
+
+<Layout title="xy">
+    <canvas id="canvas" class="center"></canvas>
+    <textarea id="code" cols="40" class="center">{examples[0]}</textarea>
+    <div class="center">
+        <p>
+            <input type="checkbox" id="greyscale" />
+            <label for="greyscale">continuous</label>
+        </p>
+        <p>
+            <input type="checkbox" id="upscale" />
+            <label for="upscale">upscale</label>
+        </p>
+    </div>
+    <div class="center">
+        <p>plot pixels with simple expressions.</p>
+        <p>
+            syntax:
+            <ul>
+                <li>
+                    <code>x</code> and <code>y</code> are coordinates (0-255)
+                </li>
+                <li><code>(</code> and <code>)</code> are grouping</li>
+                <li><code>%</code> is modulo</li>
+                <li><code>*</code> is multiplication</li>
+                <li><code>+</code> is addition</li>
+                <li><code>-</code> is subtraction</li>
+                <li><code>/</code> is division</li>
+                <li><code>!</code> is exponentiation</li>
+                <li><code>^</code> is bitwise xor</li>
+                <li><code>&</code> is bitwise and</li>
+                <li><code>|</code> is bitwise or</li>
+            </ul>
+        </p>
+        <p>
+            modes:
+            <ul>
+                <li>normal: zero → white, non-zero → black</li>
+                <li>continuous: colour is <code>1 - fract(result)</code></li>
+            </ul>
+        </p>
+        <h1>examples</h1>
+        <p>try toggling greyscale on some of these:</p>
+        <ul class="examples">
+            {
+                examples.map((code) => (
+                    <li>
+                        <code>{code}</code>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+
+    <span class="italic"
+        >inspired by <a href="https://twitter.com/aemkei">@aemkei</a></span
+    >
+</Layout>
+
+<script type="module">
+    const tokensMap = {
+        x: { name: "x", kind: "value" },
+        y: { name: "y", kind: "value" },
+        "(": { name: "open", kind: "group" },
+        ")": { name: "close", kind: "group" },
+        "%": { name: "mod", kind: "op" },
+        "*": { name: "mul", kind: "op" },
+        "+": { name: "add", kind: "op" },
+        "-": { name: "sub", kind: "op" },
+        "/": { name: "div", kind: "op" },
+        "!": { name: "pow", kind: "op" },
+        "^": { name: "xor", kind: "op" },
+        "&": { name: "and", kind: "op" },
+        "|": { name: "or", kind: "op" },
+    };
+
+    let scale = 1;
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    function resize() {
+        canvas.width = 256 * scale;
+        canvas.height = 256 * scale;
+    }
+
+    function isDigit(c) {
+        return c >= "0" && c <= "9";
+    }
+
+    function parse(code) {
+        let tokens = [];
+        for (let i = 0; i < code.length; i++) {
+            const c = code[i];
+            if (tokensMap[c]) {
+                tokens.push(tokensMap[c]);
+            } else if (isDigit(c)) {
+                let num = "";
+                while (i < code.length && isDigit(code[i])) {
+                    num += code[i];
+                    i++;
+                }
+                i--;
+                tokens.push({
+                    name: "num",
+                    kind: "value",
+                    value: parseInt(num),
+                });
+            }
+        }
+        console.log(tokens.map((t) => t.name));
+        return tokens;
+    }
+
+    function postfix(tokens) {
+        let output = [];
+        let stack = [];
+
+        function unstackUntilOpen() {
+            while (
+                stack.length > 0 &&
+                stack[stack.length - 1].name !== "open"
+            ) {
+                output.push(stack.pop());
+            }
+        }
+
+        for (let i = 0; i < tokens.length; i++) {
+            const token = tokens[i];
+            if (token.kind === "value") {
+                output.push(token);
+            } else if (token.kind === "op") {
+                unstackUntilOpen();
+                stack.push(token);
+            } else if (token.name === "open") {
+                stack.push(token);
+            } else if (token.name === "close") {
+                unstackUntilOpen();
+                stack.pop();
+            }
+        }
+
+        while (stack.length > 0) {
+            if (stack[stack.length - 1].name === "open") {
+                console.error("unmatched open parenthesis");
+                return [];
+            }
+            output.push(stack.pop());
+        }
+
+        return output;
+    }
+
+    function execute(tokens, x, y) {
+        let stack = [];
+
+        function pop2() {
+            return [stack.pop(), stack.pop()];
+        }
+
+        function binop(op) {
+            const [a, b] = pop2();
+            stack.push(op(a, b));
+        }
+
+        const operations = {
+            x: () => stack.push(x),
+            y: () => stack.push(y),
+            num: (token) => stack.push(token.value),
+            mod: () => binop((a, b) => b % a),
+            mul: () => binop((a, b) => b * a),
+            add: () => binop((a, b) => b + a),
+            sub: () => binop((a, b) => b - a),
+            div: () => binop((a, b) => b / a),
+            pow: () => binop((a, b) => Math.pow(b, a)),
+            xor: () => binop((a, b) => b ^ a),
+            and: () => binop((a, b) => b & a),
+            or: () => binop((a, b) => b | a),
+        };
+
+        for (let i = 0; i < tokens.length; i++) {
+            const token = tokens[i];
+            if (operations[token.name]) {
+                operations[token.name](token);
+            } else {
+                console.log("unknown token", tokens[i]);
+            }
+        }
+
+        return stack[0];
+    }
+
+    function render(tokens) {
+        const greyscale = document.getElementById("greyscale").checked;
+        for (let x = 0; x < 256; x++) {
+            for (let y = 0; y < 256; y++) {
+                let result = execute(tokens, x, y);
+                let color = greyscale
+                    ? 255 - (Math.abs(result) % 255)
+                    : result
+                      ? 0
+                      : 255;
+                ctx.fillStyle = `rgb(${color}, ${color}, ${color})`;
+                ctx.fillRect(x * scale, y * scale, scale, scale);
+            }
+        }
+    }
+
+    function refresh() {
+        const code = document.getElementById("code").value;
+        resize();
+        render(postfix(parse(code)));
+    }
+
+    document.getElementById("code").addEventListener("input", refresh);
+    document.getElementById("greyscale").addEventListener("input", refresh);
+    document.getElementById("upscale").addEventListener("input", () => {
+        scale = document.getElementById("upscale").checked ? 2 : 1;
+        refresh();
+    });
+    refresh();
+</script>
+
+<style lang="css">
+    #canvas {
+        margin-bottom: 2rem;
+        box-shadow: 2px 2px 16px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .center {
+        margin: 0 auto;
+        display: block;
+        width: fit-content;
+    }
+
+    textarea {
+        text-align: center;
+        background: none;
+        border: 1px solid var(--c-edge);
+        font-size: 2rem;
+        font-family: monospace;
+        min-width: 256px;
+        min-height: 3rem;
+        padding: 0.5rem;
+    }
+
+    ul.examples {
+        font-size: 1.2rem;
+    }
+
+    .italic {
+        font-style: italic;
+    }
+</style>
