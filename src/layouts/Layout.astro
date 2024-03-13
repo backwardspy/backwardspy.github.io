@@ -46,6 +46,7 @@ const { title } = Astro.props;
 	:root {
 		--c-pink1: #f093fb;
 		--c-pink2: #f5576c;
+		--c-error: #f06940;
 
 		--c-dark: #18171a;
 		--c-light: #f5f5fa;
@@ -140,6 +141,20 @@ const { title } = Astro.props;
 	img {
 		max-width: 100%;
 		height: auto;
+	}
+
+	table {
+		border-collapse: collapse;
+	}
+
+	th,
+	td {
+		padding: 0.5rem;
+		border-bottom: 1px solid var(--c-edge);
+	}
+
+	th {
+		text-align: left;
 	}
 
 	.magic {
