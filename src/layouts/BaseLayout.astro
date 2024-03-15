@@ -21,16 +21,16 @@ const { title } = Astro.props;
 	</head>
 
 	<body>
-		<header>
-			<div class="container">
+		<div class="container">
+			<header>
 				<a href="/"><img src="/img/avatar.webp" /></a>
 				<slot name="header" />
-			</div>
-		</header>
+			</header>
 
-		<main>
-			<slot />
-		</main>
+			<main>
+				<slot />
+			</main>
+		</div>
 
 		<p
 			aria-hidden="true"
@@ -81,50 +81,6 @@ const { title } = Astro.props;
 		font-family: sans-serif;
 		background-color: var(--c-bg);
 		color: var(--c-fg);
-	}
-
-	div.container {
-		padding: 3rem;
-		max-width: 1400px;
-		margin: 0 auto;
-	}
-
-	div.title-block {
-		max-width: fit-content;
-	}
-
-	h1.title {
-		font-size: 72px;
-	}
-
-	h1.title > span {
-		display: inline-block;
-	}
-
-	h2.subtitle {
-		text-align: right;
-		margin-top: -3rem;
-	}
-
-	@media (max-width: 1200px) {
-		h1.title {
-			font-size: 48px;
-		}
-
-		h2.subtitle {
-			margin-top: -2rem;
-			font-size: 20px;
-		}
-	}
-
-	@media (max-width: 800px) {
-		div.title-block {
-			margin-bottom: 3rem;
-		}
-
-		h2.subtitle {
-			text-align: center;
-		}
 	}
 
 	a {

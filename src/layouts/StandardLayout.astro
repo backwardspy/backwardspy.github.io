@@ -1,0 +1,72 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+    title: string;
+    noHeader?: boolean;
+}
+
+const { title, noHeader } = Astro.props.frontmatter || Astro.props;
+---
+
+<BaseLayout title={title}>
+    {
+        !noHeader && (
+            <slot name="header">
+                <div class="title-block">
+                    <h1 class="title">{title}</h1>
+                </div>
+            </slot>
+        )
+    }
+
+    <main>
+        <slot />
+    </main>
+
+    <style lang="css" is:global>
+        div.container {
+            padding: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        div.title-block {
+            max-width: fit-content;
+        }
+
+        h1.title {
+            font-size: 72px;
+        }
+
+        h1.title > span {
+            display: inline-block;
+        }
+
+        h2.subtitle {
+            text-align: right;
+            margin-top: -3rem;
+        }
+
+        @media (max-width: 1200px) {
+            h1.title {
+                font-size: 48px;
+            }
+
+            h2.subtitle {
+                margin-top: -2rem;
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 800px) {
+            div.title-block {
+                margin-bottom: 3rem;
+            }
+
+            h2.subtitle {
+                text-align: center;
+            }
+        }
+    </style>
+</BaseLayout>

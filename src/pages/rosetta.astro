@@ -1,36 +1,28 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import StandardLayout from "../layouts/StandardLayout.astro";
 
 import inscriptions from "../inscriptions.json";
 ---
 
-<Layout title="rosetta stone">
-    <div slot="header" class="title-block">
-        <h1 class="title">the catppuccin stone</h1>
+<StandardLayout title="the catppuccin stone">
+    <div class="stone">
+        {
+            inscriptions.map((inscription) => (
+                <div class="inscription">
+                    {inscription.lines.map((line) => (
+                        <p>{line}</p>
+                    ))}
+                    <p class="credit">
+                        <small>
+                            {inscription.language} translation by{" "}
+                            <a href={inscription.link}>{inscription.author}</a>
+                        </small>
+                    </p>
+                </div>
+            ))
+        }
     </div>
-
-    <div class="container">
-        <div class="stone">
-            {
-                inscriptions.map((inscription) => (
-                    <div class="inscription">
-                        {inscription.lines.map((line) => (
-                            <p>{line}</p>
-                        ))}
-                        <p class="credit">
-                            <small>
-                                {inscription.language} translation by{" "}
-                                <a href={inscription.link}>
-                                    {inscription.author}
-                                </a>
-                            </small>
-                        </p>
-                    </div>
-                ))
-            }
-        </div>
-    </div>
-</Layout>
+</StandardLayout>
 
 <style lang="css">
     div.stone {

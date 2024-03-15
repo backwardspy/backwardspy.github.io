@@ -1,0 +1,72 @@
+---
+layout: ../layouts/StandardLayout.astro
+title: little fonts
+---
+
+import sample from "../res/pages/little-fonts/3x3.svg?raw"
+
+it turns out there have been quite a few people making really *tiny* little
+fonts.
+
+## 3x3 typeface by Anders de Flon ([reference](http://luc.devroye.org/fonts-51468.html))
+
+created in 2003 by a swedish designer and released in 2005, this typeface is
+probably at the limit of legibility.
+
+this is the entire typeface:
+
+![a 6x6 grid of the letters A-Z and digits 0-9 made of 3x3 pixels each](/pages/little-fonts/3x3.webp)
+
+i've embedded [an 8x8 font](https://github.com/dhepper/font8x8) in binaries
+before in cases where i wanted rudimentary text rendering without loading
+external resources. in that case, characters were stored as 8 bytes, one for
+each row. this 3x3 is *almost* small enough to store entire characters as
+a single byte each.
+
+<Fragment set:html={sample}/>
+
+... though i wish it was 8.
+
+## nanofont3x4 ([reference](https://github.com/Michaelangel007/nanofont3x4))
+
+adding one more row improves legibility tremendously. this font could be useful
+in any number of super low resolution applications. i'm thinking tiny displays
+on embedded hardware, and fantasy consoles à la pico-8.
+
+![nanofont code sample rendered in nanofont itself](/pages/little-fonts/nanofont3x4.webp)
+
+## subpixel 1x5 fonts..? ([reference](https://github.com/tangmi/really-small-font))
+
+this is where things start to get weird. assuming specific horizontal subpixel
+layouts allow us to form 1x5 character blocks that end up as 3x5 subpixels.
+
+![a font sample rendered in a 1x5 subpixel layout](/pages/little-fonts/subpixel.webp)
+
+if you double the columns to 2x5, you enter the realm of what we can now call *extremely legible*.
+
+![a font sample rendered in a 2x5 subpixel layout](/pages/little-fonts/subpixel2.webp)
+
+these millitext images are courtesy of [msarnoff.org](http://www.msarnoff.org/millitext/).
+go there to see the images at their native resolution - if you have a monitor
+with the correct subpixel layout you might even be able to read them.
+
+## dotsies ([reference](https://dotsies.org/))
+
+we're now moving out of the realm of simply minimizing the number of pixels used
+to represent a character, and into the realm of *redefining* what a character
+even is.
+
+dotsies is a project that aims to optimise the latin alphabet into 1x5 pixel
+columns for extreme spatial efficiency. the result is a font that looks to me
+like some sort of alien language.
+
+![some text rendered with the dotsies font](/pages/little-fonts/dotsies.webp)
+
+i recommend checking out the [dotsies website](https://dotsies.org) and trying
+to read the text there; it's a fun challenge.
+
+## additional reading
+
+- https://www.flickr.com/photos/dafalcon/5204413187
+- https://advent.blinry.org/2018/17
+- https://news.ycombinator.com/item?id=3602163

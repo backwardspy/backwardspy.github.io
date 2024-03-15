@@ -1,5 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import StandardLayout from "../layouts/StandardLayout.astro";
 
 const examples = [
     "((x-128)*64)%(y-128)",
@@ -10,91 +10,89 @@ const examples = [
 ];
 ---
 
-<Layout title="xy">
-    <div class="container">
-        <canvas id="canvas" class="center"></canvas>
-        <textarea id="code" cols="40" class="center">{examples[0]}</textarea>
-        <div class="center">
-            <p>
-                <input type="checkbox" id="continuous" />
-                <label for="continuous">continuous</label>
-            </p>
-            <p>
-                <input type="checkbox" id="upscale" />
-                <label for="upscale">upscale</label>
-            </p>
-        </div>
-
-        <hr />
-
-        <div>
-            <p>plot pixels with simple expressions.</p>
-            <details>
-                <summary>syntax</summary>
-                <ul>
-                    <li>
-                        <code>x</code> and <code>y</code> are coordinates (0-255)
-                    </li>
-                    <li><code>(</code> and <code>)</code> are grouping</li>
-                    <li><code>%</code> is modulo</li>
-                    <li><code>*</code> is multiplication</li>
-                    <li><code>+</code> is addition</li>
-                    <li><code>-</code> is subtraction</li>
-                    <li><code>/</code> is division</li>
-                    <li><code>!</code> is exponentiation</li>
-                    <li><code>^</code> is bitwise xor</li>
-                    <li><code>&</code> is bitwise and</li>
-                    <li><code>|</code> is bitwise or</li>
-                </ul>
-            </details>
-            <details>
-                <summary>modes</summary>
-                <ul>
-                    <li>normal: zero → white, non-zero → black</li>
-                    <li>
-                        continuous: colour is <code>1 - fract(result)</code>
-                    </li>
-                </ul>
-            </details>
-            <details open>
-                <summary>examples</summary>
-                <p>
-                    try toggling <strong>continuous</strong> on some of these:
-                </p>
-                <ul class="examples">
-                    {
-                        examples.map((code) => (
-                            <li>
-                                <code>{code}</code>
-                            </li>
-                        ))
-                    }
-                </ul>
-            </details>
-            <details>
-                <summary>debugger</summary>
-                <p id="debugger-error"></p>
-                <p id="debugger-parse"></p>
-                <p id="debugger-postfix"></p>
-                <p>execution trace for pixel (32, 32):</p>
-                <table>
-                    <thead>
-                        <th>step</th>
-                        <th>token</th>
-                        <th>stack</th>
-                    </thead>
-                    <tbody id="debugger-trace"> </tbody>
-                </table>
-            </details>
-        </div>
-
-        <hr />
-
-        <span class="italic"
-            >inspired by <a href="https://twitter.com/aemkei">@aemkei</a></span
-        >
+<StandardLayout title="xy">
+    <canvas id="canvas" class="center"></canvas>
+    <textarea id="code" cols="40" class="center">{examples[0]}</textarea>
+    <div class="center">
+        <p>
+            <input type="checkbox" id="continuous" />
+            <label for="continuous">continuous</label>
+        </p>
+        <p>
+            <input type="checkbox" id="upscale" />
+            <label for="upscale">upscale</label>
+        </p>
     </div>
-</Layout>
+
+    <hr />
+
+    <div>
+        <p>plot pixels with simple expressions.</p>
+        <details>
+            <summary>syntax</summary>
+            <ul>
+                <li>
+                    <code>x</code> and <code>y</code> are coordinates (0-255)
+                </li>
+                <li><code>(</code> and <code>)</code> are grouping</li>
+                <li><code>%</code> is modulo</li>
+                <li><code>*</code> is multiplication</li>
+                <li><code>+</code> is addition</li>
+                <li><code>-</code> is subtraction</li>
+                <li><code>/</code> is division</li>
+                <li><code>!</code> is exponentiation</li>
+                <li><code>^</code> is bitwise xor</li>
+                <li><code>&</code> is bitwise and</li>
+                <li><code>|</code> is bitwise or</li>
+            </ul>
+        </details>
+        <details>
+            <summary>modes</summary>
+            <ul>
+                <li>normal: zero → white, non-zero → black</li>
+                <li>
+                    continuous: colour is <code>1 - fract(result)</code>
+                </li>
+            </ul>
+        </details>
+        <details open>
+            <summary>examples</summary>
+            <p>
+                try toggling <strong>continuous</strong> on some of these:
+            </p>
+            <ul class="examples">
+                {
+                    examples.map((code) => (
+                        <li>
+                            <code>{code}</code>
+                        </li>
+                    ))
+                }
+            </ul>
+        </details>
+        <details>
+            <summary>debugger</summary>
+            <p id="debugger-error"></p>
+            <p id="debugger-parse"></p>
+            <p id="debugger-postfix"></p>
+            <p>execution trace for pixel (32, 32):</p>
+            <table>
+                <thead>
+                    <th>step</th>
+                    <th>token</th>
+                    <th>stack</th>
+                </thead>
+                <tbody id="debugger-trace"> </tbody>
+            </table>
+        </details>
+    </div>
+
+    <hr />
+
+    <span class="italic"
+        >inspired by <a href="https://twitter.com/aemkei">@aemkei</a></span
+    >
+</StandardLayout>
 
 <script>
     enum Symbol {
