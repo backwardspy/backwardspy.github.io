@@ -6,6 +6,7 @@ interface Props {
     noHeader?: boolean;
 }
 
+// @ts-ignore  it doesn't like `frontmatter`, but it still works
 const { title, noHeader } = Astro.props.frontmatter || Astro.props;
 ---
 
