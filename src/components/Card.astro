@@ -77,6 +77,12 @@ const { href, title, icon, external }: Props = Astro.props;
                 rgba(255, 255, 255, 0.1),
                 transparent
             );
+            mask: var(--noise),
+                radial-gradient(
+                    400px circle at var(--px) var(--py),
+                    transparent,
+                    black 110%
+                );
         }
     }
 
