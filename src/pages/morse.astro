@@ -1,0 +1,210 @@
+---
+import StandardLayout from "../layouts/StandardLayout.astro";
+---
+
+<StandardLayout title="morse">
+    <canvas id="canvas" class="center"></canvas>
+    <label for="lineWidth">line width</label>
+    <input
+        type="range"
+        id="lineWidth"
+        min="2"
+        max="15"
+        value="10"
+        step="0.01"
+    />
+    <textarea id="text" cols="38" class="center"
+        >make morse code into circles, this is my last resort</textarea
+    >
+</StandardLayout>
+
+<script>
+    function ensureElement<T extends HTMLElement>(
+        id: string,
+        type: new () => T,
+    ): T {
+        const el = document.getElementById(id);
+        if (el === null || !(el instanceof type)) {
+            throw new Error(`element #${id} not found or not of type ${type}`);
+        }
+        return el;
+    }
+
+    function prefersColorSchemeDark(): MediaQueryList {
+        return window.matchMedia("(prefers-color-scheme: dark)");
+    }
+
+    function morse(letter: string): string | undefined {
+        return {
+            a: ".-",
+            b: "-...",
+            c: "-.-.",
+            d: "-..",
+            e: ".",
+            f: "..-.",
+            g: "--.",
+            h: "....",
+            i: "..",
+            j: ".---",
+            k: "-.-",
+            l: ".-..",
+            m: "--",
+            n: "-.",
+            o: "---",
+            p: ".--.",
+            q: "--.-",
+            r: ".-.",
+            s: "...",
+            t: "-",
+            u: "..-",
+            v: "...-",
+            w: ".--",
+            x: "-..-",
+            y: "-.--",
+            z: "--..",
+            "0": "-----",
+            "1": ".----",
+            "2": "..---",
+            "3": "...--",
+            "4": "....-",
+            "5": ".....",
+            "6": "-....",
+            "7": "--...",
+            "8": "---..",
+            "9": "----.",
+            ".": ".-.-.-",
+            ",": "--..--",
+            "?": "..--..",
+            "'": ".----.",
+            "!": "-.-.--",
+            "/": "-..-.",
+            "(": "-.--.",
+            ")": "-.--.-",
+            "&": ".-...",
+            ":": "---...",
+            ";": "-.-.-.",
+            "=": "-...-",
+            "+": ".-.-.",
+            "-": "-....-",
+            _: "..--.-",
+            '"': ".-..-.",
+            $: "...-..-",
+            "@": ".--.-.",
+            " ": " ",
+        }[letter.toLowerCase()];
+    }
+
+    function render(text: string, lineWidth: number, strokeStyle: string) {
+        const ctx = canvas.getContext("2d");
+        if (ctx === null) {
+            throw new Error("could not get 2d context");
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        let angle = 0;
+        let radius = 230;
+
+        function arcLength(distance: number): number {
+            return distance / radius;
+        }
+
+        const dit = 10;
+        const dah = 3 * dit;
+        const space = (1 + lineWidth / 10) * dit;
+        const letter_space = 3 * dit;
+        const word_space = 7 * dit;
+
+        const totalLength = text
+            .split("")
+            .map((c) => morse(c) ?? "")
+            .join("").length;
+
+        ctx.lineWidth = lineWidth;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = strokeStyle;
+
+        for (const letter of text) {
+            const code = morse(letter);
+            if (code === undefined) {
+                continue;
+            }
+
+            for (const char of code) {
+                if (char === " ") {
+                    angle += arcLength(word_space);
+                    continue;
+                }
+                let length = arcLength(char === "." ? dit : dah);
+
+                ctx.beginPath();
+                ctx.arc(256, 256, radius, angle, angle + length);
+                ctx.stroke();
+                ctx.closePath();
+
+                const increment = length + arcLength(space);
+                angle += increment;
+                radius -= (increment * ctx.lineWidth) / 2;
+
+                if (radius <= 0) {
+                    console.log("ran out of space");
+                    return;
+                }
+            }
+            angle += arcLength(letter_space);
+        }
+    }
+
+    function refresh(
+        canvas: HTMLCanvasElement,
+        text: HTMLTextAreaElement,
+        lineWidth: HTMLInputElement,
+    ) {
+        canvas.width = 512;
+        canvas.height = 512;
+
+        const dark = prefersColorSchemeDark().matches;
+        render(
+            text.value,
+            parseFloat(lineWidth.value),
+            dark ? "white" : "black",
+        );
+    }
+
+    const canvas = ensureElement("canvas", HTMLCanvasElement);
+    const text = ensureElement("text", HTMLTextAreaElement);
+    const lineWidth = ensureElement("lineWidth", HTMLInputElement);
+    text.addEventListener("input", () => refresh(canvas, text, lineWidth));
+    lineWidth.addEventListener("input", () => refresh(canvas, text, lineWidth));
+    prefersColorSchemeDark().addEventListener("change", () =>
+        refresh(canvas, text, lineWidth),
+    );
+    refresh(canvas, text, lineWidth);
+</script>
+
+<style lang="css">
+    #canvas {
+        margin-bottom: 2rem;
+        box-shadow: 2px 2px 16px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .center {
+        margin: 0 auto;
+        display: block;
+        width: fit-content;
+    }
+
+    textarea {
+        text-align: center;
+        background: none;
+        border: 1px solid var(--c-edge);
+        font-size: 2rem;
+        font-family: monospace;
+        min-width: 256px;
+        min-height: 3rem;
+        padding: 0.5rem;
+    }
+
+    input[type="range"] {
+        width: 100%;
+    }
+</style>
