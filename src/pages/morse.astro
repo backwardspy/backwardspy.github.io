@@ -13,7 +13,7 @@ import StandardLayout from "../layouts/StandardLayout.astro";
         value="10"
         step="0.01"
     />
-    <textarea id="text" cols="38" class="center"
+    <textarea id="text"
         >make morse code into circles, this is my last resort</textarea
     >
 </StandardLayout>
@@ -194,14 +194,17 @@ import StandardLayout from "../layouts/StandardLayout.astro";
     }
 
     textarea {
-        text-align: center;
+        display: block;
         background: none;
         border: 1px solid var(--c-edge);
-        font-size: 2rem;
         font-family: monospace;
-        min-width: 256px;
+        font-size: 2rem;
+        margin: 0 auto;
         min-height: 3rem;
+        min-width: 256px;
         padding: 0.5rem;
+        text-align: center;
+        width: 100%;
     }
 
     input[type="range"] {

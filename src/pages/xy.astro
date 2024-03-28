@@ -12,7 +12,7 @@ const examples = [
 
 <StandardLayout title="xy">
     <canvas id="canvas" class="center"></canvas>
-    <textarea id="code" cols="40" class="center">{examples[0]}</textarea>
+    <textarea id="code">{examples[0]}</textarea>
     <div class="center">
         <p>
             <input type="checkbox" id="continuous" />
@@ -415,14 +415,17 @@ const examples = [
     }
 
     textarea {
-        text-align: center;
+        display: block;
         background: none;
         border: 1px solid var(--c-edge);
-        font-size: 2rem;
         font-family: monospace;
-        min-width: 256px;
+        font-size: 2rem;
+        margin: 0 auto;
         min-height: 3rem;
+        min-width: 256px;
         padding: 0.5rem;
+        text-align: center;
+        width: 100%;
     }
 
     ul.examples {
