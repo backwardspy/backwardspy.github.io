@@ -94,7 +94,12 @@ import StandardLayout from "../layouts/StandardLayout.astro";
         }[letter.toLowerCase()];
     }
 
-    function render(text: string, lineWidth: number, strokeStyle: string) {
+    function render(
+        canvas: HTMLCanvasElement,
+        text: string,
+        lineWidth: number,
+        strokeStyle: string,
+    ) {
         const ctx = canvas.getContext("2d");
         if (ctx === null) {
             throw new Error("could not get 2d context");
@@ -113,11 +118,6 @@ import StandardLayout from "../layouts/StandardLayout.astro";
         const space = (1 + lineWidth / 10) * dit;
         const letter_space = 3 * dit;
         const word_space = 7 * dit;
-
-        const totalLength = text
-            .split("")
-            .map((c) => morse(c) ?? "")
-            .join("").length;
 
         ctx.lineWidth = lineWidth;
         ctx.lineCap = "round";
@@ -164,6 +164,7 @@ import StandardLayout from "../layouts/StandardLayout.astro";
 
         const dark = prefersColorSchemeDark().matches;
         render(
+            canvas,
             text.value,
             parseFloat(lineWidth.value),
             dark ? "white" : "black",

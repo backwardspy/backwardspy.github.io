@@ -288,7 +288,12 @@ const examples = [
         return stack[0];
     }
 
-    function render(tokens: Token[], scale: number, continuous: boolean) {
+    function render(
+        canvas: HTMLCanvasElement,
+        tokens: Token[],
+        scale: number,
+        continuous: boolean,
+    ) {
         const ctx = canvas.getContext("2d");
         if (ctx === null) {
             throw new Error("could not get 2d context");
@@ -365,7 +370,7 @@ const examples = [
             ).textContent = `postfix: [${expr.join(", ")}]`;
             maybe(() => debug(expr, 32, 32));
             resize(canvas, scale);
-            render(expr, scale, continuous);
+            render(canvas, expr, scale, continuous);
         } catch (e) {
             console.error(e);
             return;
