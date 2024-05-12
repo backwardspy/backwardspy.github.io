@@ -10,7 +10,7 @@ const examples = [
 ];
 ---
 
-<StandardLayout title="xy">
+<StandardLayout title="xy" slug="xy">
     <canvas id="canvas" class="center"></canvas>
     <textarea id="code">{examples[0]}</textarea>
     <div class="center">
@@ -383,23 +383,32 @@ const examples = [
         return el;
     }
 
-    let scale = 1;
-    const canvas = ensureElement("canvas", HTMLCanvasElement);
-    const code = ensureElement("code", HTMLTextAreaElement);
-    const continuous = ensureElement("continuous", HTMLInputElement);
-    const upscale = ensureElement("upscale", HTMLInputElement);
+    document.addEventListener("astro:page-load", () => {
+        // only run on /xy
+        // TODO: is there a better way to do this?
+        if (location.pathname !== "/xy") {
+            return;
+        }
 
-    code.addEventListener("input", () =>
-        refresh(code.value, canvas, scale, continuous.checked),
-    );
-    continuous.addEventListener("input", () =>
-        refresh(code.value, canvas, scale, continuous.checked),
-    );
-    upscale.addEventListener("input", () => {
-        scale = upscale.checked ? 2 : 1;
+        let scale = 1;
+
+        const canvas = ensureElement("canvas", HTMLCanvasElement);
+        const code = ensureElement("code", HTMLTextAreaElement);
+        const continuous = ensureElement("continuous", HTMLInputElement);
+        const upscale = ensureElement("upscale", HTMLInputElement);
+
+        code.addEventListener("input", () =>
+            refresh(code.value, canvas, scale, continuous.checked),
+        );
+        continuous.addEventListener("input", () =>
+            refresh(code.value, canvas, scale, continuous.checked),
+        );
+        upscale.addEventListener("input", () => {
+            scale = upscale.checked ? 2 : 1;
+            refresh(code.value, canvas, scale, continuous.checked);
+        });
         refresh(code.value, canvas, scale, continuous.checked);
     });
-    refresh(code.value, canvas, scale, continuous.checked);
 </script>
 
 <style lang="css">

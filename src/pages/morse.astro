@@ -2,7 +2,7 @@
 import StandardLayout from "../layouts/StandardLayout.astro";
 ---
 
-<StandardLayout title="morse">
+<StandardLayout title="morse" slug="morse">
     <canvas id="canvas" class="center"></canvas>
     <label for="lineWidth">line width</label>
     <input
@@ -170,15 +170,25 @@ import StandardLayout from "../layouts/StandardLayout.astro";
         );
     }
 
-    const canvas = ensureElement("canvas", HTMLCanvasElement);
-    const text = ensureElement("text", HTMLTextAreaElement);
-    const lineWidth = ensureElement("lineWidth", HTMLInputElement);
-    text.addEventListener("input", () => refresh(canvas, text, lineWidth));
-    lineWidth.addEventListener("input", () => refresh(canvas, text, lineWidth));
-    prefersColorSchemeDark().addEventListener("change", () =>
-        refresh(canvas, text, lineWidth),
-    );
-    refresh(canvas, text, lineWidth);
+    document.addEventListener("astro:page-load", () => {
+        // only run on /morse
+        // TODO: is there a better way to do this?
+        if (location.pathname !== "/morse") {
+            return;
+        }
+
+        const canvas = ensureElement("canvas", HTMLCanvasElement);
+        const text = ensureElement("text", HTMLTextAreaElement);
+        const lineWidth = ensureElement("lineWidth", HTMLInputElement);
+        text.addEventListener("input", () => refresh(canvas, text, lineWidth));
+        lineWidth.addEventListener("input", () =>
+            refresh(canvas, text, lineWidth),
+        );
+        prefersColorSchemeDark().addEventListener("change", () =>
+            refresh(canvas, text, lineWidth),
+        );
+        refresh(canvas, text, lineWidth);
+    });
 </script>
 
 <style lang="css">

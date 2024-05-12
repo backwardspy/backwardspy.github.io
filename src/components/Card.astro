@@ -2,17 +2,22 @@
 import { Icon } from "astro-icon/components";
 
 interface Props {
-    href: string;
+    slug?: string;
+    url?: string;
     title: string;
     icon: string;
     external?: boolean;
 }
 
-const { href, title, icon, external }: Props = Astro.props;
+const { slug, url, title, icon, external }: Props = Astro.props;
 ---
 
-<a href={href} target={external ? "_blank" : "_self"} class="card-link">
-    <div class="card">
+<a
+    href={slug ? `/${slug}` : url}
+    target={external ? "_blank" : "_self"}
+    class="card-link"
+>
+    <div class="card" transition:name={slug}>
         <h1>{title}</h1>
         <p><Icon name={icon} /></p>
         <slot />

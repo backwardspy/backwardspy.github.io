@@ -3,15 +3,16 @@ import BaseLayout from "./BaseLayout.astro";
 
 interface Props {
     title: string;
+    slug: string;
     noHeader?: boolean;
 }
 
 // @ts-ignore  it doesn't like `frontmatter`, but it still works
-const { title } = Astro.props.frontmatter || Astro.props;
+const { title, slug } = Astro.props.frontmatter || Astro.props;
 ---
 
 <BaseLayout title={title} noHeader>
-    <div class="content">
+    <div class="content" transition:name={slug}>
         <h1>{title}</h1>
         <main>
             <slot />
