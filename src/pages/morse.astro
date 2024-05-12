@@ -174,7 +174,7 @@ import StandardLayout from "../layouts/StandardLayout.astro";
     document.addEventListener("astro:page-load", () => {
         // only run on /morse
         // TODO: is there a better way to do this?
-        if (location.pathname !== "/morse") {
+        if (!location.pathname.includes("morse")) {
             return;
         }
 

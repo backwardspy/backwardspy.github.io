@@ -391,7 +391,7 @@ const examples = [
     document.addEventListener("astro:page-load", () => {
         // only run on /xy
         // TODO: is there a better way to do this?
-        if (location.pathname !== "/xy") {
+        if (!location.pathname.includes("/xy")) {
             return;
         }
 
