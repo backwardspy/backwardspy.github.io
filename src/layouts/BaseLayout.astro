@@ -42,6 +42,12 @@ const { title, noHeader } = Astro.props.frontmatter || Astro.props;
 			</main>
 		</div>
 
+		<div id="webring">
+			<a href="https://ctp-webr.ing/backwardspy/previous">&larr;</a><a
+				href="https://ctp-webr.ing/">catppuccin webring</a
+			><a href="https://ctp-webr.ing/backwardspy/next">&rarr;</a>
+		</div>
+
 		<p
 			aria-hidden="true"
 			style="color:rgba(0,0,0,0);user-select:none;position:fixed"
@@ -52,7 +58,7 @@ const { title, noHeader } = Astro.props.frontmatter || Astro.props;
 	</body>
 </html>
 
-<style lang="css" is:global>
+<style lang="scss" is:global>
 	:root {
 		--c-pink1: #f093fb;
 		--c-pink2: #f5576c;
@@ -165,6 +171,15 @@ const { title, noHeader } = Astro.props.frontmatter || Astro.props;
 		}
 	}
 
+	#webring {
+		text-align: center;
+		padding: 1rem;
+
+		a {
+			margin: 0 0.25rem;
+		}
+	}
+
 	.magic {
 		background-color: var(--c-pink1);
 		background: linear-gradient(
@@ -191,6 +206,7 @@ const { title, noHeader } = Astro.props.frontmatter || Astro.props;
 
 	div.title-block {
 		max-width: fit-content;
+		margin-bottom: 3rem;
 	}
 
 	h1.title {
@@ -222,7 +238,6 @@ const { title, noHeader } = Astro.props.frontmatter || Astro.props;
 
 	@media (max-width: 800px) {
 		div.title-block {
-			margin-bottom: 3rem;
 			text-align: center;
 		}
 
