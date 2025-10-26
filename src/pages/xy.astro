@@ -2,459 +2,454 @@
 import StandardLayout from "../layouts/StandardLayout.astro";
 
 const examples = [
-    "((x-128)*64)%(y-128)",
-    "(x^y)%9",
-    "(x*3)^(y*3)",
-    "((x|y)%15)*16",
-    "((x-y)!2)/32",
+  "((x-128)*64)%(y-128)",
+  "(x^y)%9",
+  "(x*3)^(y*3)",
+  "((x|y)%15)*16",
+  "((x-y)!2)/32",
 ];
 ---
 
 <StandardLayout title="xy" slug="xy">
-    <canvas id="canvas" class="center"></canvas>
-    <textarea id="code">{examples[0]}</textarea>
-    <div class="center">
-        <p>
-            <input type="checkbox" id="continuous" />
-            <label for="continuous">continuous</label>
-        </p>
-        <p>
-            <input type="checkbox" id="upscale" />
-            <label for="upscale">upscale</label>
-        </p>
-    </div>
+  <canvas id="canvas" class="center"></canvas>
+  <textarea id="code">{examples[0]}</textarea>
+  <div class="center">
+    <p>
+      <input type="checkbox" id="continuous" />
+      <label for="continuous">continuous</label>
+    </p>
+    <p>
+      <input type="checkbox" id="upscale" />
+      <label for="upscale">upscale</label>
+    </p>
+  </div>
 
-    <hr />
+  <hr />
 
-    <div>
-        <p>plot pixels with simple expressions.</p>
-        <details>
-            <summary>syntax</summary>
-            <ul>
-                <li>
-                    <code>x</code> and <code>y</code> are coordinates (0-255)
-                </li>
-                <li><code>(</code> and <code>)</code> are grouping</li>
-                <li><code>%</code> is modulo</li>
-                <li><code>*</code> is multiplication</li>
-                <li><code>+</code> is addition</li>
-                <li><code>-</code> is subtraction</li>
-                <li><code>/</code> is division</li>
-                <li><code>!</code> is exponentiation</li>
-                <li><code>^</code> is bitwise xor</li>
-                <li><code>&</code> is bitwise and</li>
-                <li><code>|</code> is bitwise or</li>
-            </ul>
-        </details>
-        <details>
-            <summary>modes</summary>
-            <ul>
-                <li>normal: zero → white, non-zero → black</li>
-                <li>
-                    continuous: colour is <code>1 - fract(result)</code>
-                </li>
-            </ul>
-        </details>
-        <details open>
-            <summary>examples</summary>
-            <p>
-                try toggling <strong>continuous</strong> on some of these:
-            </p>
-            <ul class="examples">
-                {
-                    examples.map((code) => (
-                        <li>
-                            <code>{code}</code>
-                        </li>
-                    ))
-                }
-            </ul>
-        </details>
-        <details>
-            <summary>debugger</summary>
-            <p id="debugger-error"></p>
-            <p id="debugger-parse"></p>
-            <p id="debugger-postfix"></p>
-            <p>execution trace for pixel (32, 32):</p>
-            <table>
-                <thead>
-                    <th>step</th>
-                    <th>token</th>
-                    <th>stack</th>
-                </thead>
-                <tbody id="debugger-trace"> </tbody>
-            </table>
-        </details>
-    </div>
+  <div>
+    <p>plot pixels with simple expressions.</p>
+    <details>
+      <summary>syntax</summary>
+      <ul>
+        <li>
+          <code>x</code> and <code>y</code> are coordinates (0-255)
+        </li>
+        <li><code>(</code> and <code>)</code> are grouping</li>
+        <li><code>%</code> is modulo</li>
+        <li><code>*</code> is multiplication</li>
+        <li><code>+</code> is addition</li>
+        <li><code>-</code> is subtraction</li>
+        <li><code>/</code> is division</li>
+        <li><code>!</code> is exponentiation</li>
+        <li><code>^</code> is bitwise xor</li>
+        <li><code>&</code> is bitwise and</li>
+        <li><code>|</code> is bitwise or</li>
+      </ul>
+    </details>
+    <details>
+      <summary>modes</summary>
+      <ul>
+        <li>normal: zero → white, non-zero → black</li>
+        <li>
+          continuous: colour is <code>1 - fract(result)</code>
+        </li>
+      </ul>
+    </details>
+    <details open>
+      <summary>examples</summary>
+      <p>
+        try toggling <strong>continuous</strong> on some of these:
+      </p>
+      <ul class="examples">
+        {
+          examples.map((code) => (
+            <li>
+              <code>{code}</code>
+            </li>
+          ))
+        }
+      </ul>
+    </details>
+    <details>
+      <summary>debugger</summary>
+      <p id="debugger-error"></p>
+      <p id="debugger-parse"></p>
+      <p id="debugger-postfix"></p>
+      <p>execution trace for pixel (32, 32):</p>
+      <table>
+        <thead>
+          <th>step</th>
+          <th>token</th>
+          <th>stack</th>
+        </thead>
+        <tbody id="debugger-trace"> </tbody>
+      </table>
+    </details>
+  </div>
 
-    <hr />
+  <hr />
 
-    <span class="italic"
-        >inspired by <a href="https://twitter.com/aemkei">@aemkei</a></span
-    >
+  <span class="italic"
+    >inspired by <a href="https://twitter.com/aemkei">@aemkei</a></span
+  >
 </StandardLayout>
 
 <script>
-    enum Symbol {
-        Open = "open",
-        Close = "close",
-        Mod = "mod",
-        Mul = "mul",
-        Add = "add",
-        Sub = "sub",
-        Div = "div",
-        Pow = "pow",
-        Xor = "xor",
-        And = "and",
-        Or = "or",
+  enum Symbol {
+    Open = "open",
+    Close = "close",
+    Mod = "mod",
+    Mul = "mul",
+    Add = "add",
+    Sub = "sub",
+    Div = "div",
+    Pow = "pow",
+    Xor = "xor",
+    And = "and",
+    Or = "or",
+  }
+
+  type SymbolMap = {
+    [key: string]: Symbol;
+  };
+
+  const symbolMap: SymbolMap = {
+    "(": Symbol.Open,
+    ")": Symbol.Close,
+    "%": Symbol.Mod,
+    "*": Symbol.Mul,
+    "+": Symbol.Add,
+    "-": Symbol.Sub,
+    "/": Symbol.Div,
+    "!": Symbol.Pow,
+    "^": Symbol.Xor,
+    "&": Symbol.And,
+    "|": Symbol.Or,
+  };
+
+  type Token = number | string | Symbol;
+
+  function isDigit(c: string) {
+    return c >= "0" && c <= "9";
+  }
+
+  function isAlpha(c: string) {
+    return (c >= "a" && c <= "z") || (c >= "A" && c <= "Z");
+  }
+
+  function isAlphanumeric(c: string) {
+    return isDigit(c) || isAlpha(c);
+  }
+
+  function parseNumber(code: string, i: number): [number, number] {
+    const head = i;
+    while (i < code.length && isDigit(code[i])) {
+      i++;
+    }
+    return [parseInt(code.slice(head, i)), i];
+  }
+
+  function parseIdentifier(code: string, i: number): [string, number] {
+    const head = i;
+    while (i < code.length && isAlphanumeric(code[i])) {
+      i++;
+    }
+    return [code.slice(head, i), i];
+  }
+
+  function parse(code: string): Token[] {
+    const tokens = [];
+    for (let i = 0; i < code.length; i++) {
+      const c = code[i];
+      if (symbolMap[c]) {
+        tokens.push(symbolMap[c]);
+      } else if (isDigit(c)) {
+        const [num, j] = parseNumber(code, i);
+        tokens.push(num);
+        i = j - 1;
+      } else if (isAlpha(c)) {
+        const [ident, j] = parseIdentifier(code, i);
+        tokens.push(ident);
+        i = j - 1;
+      }
+    }
+    return tokens;
+  }
+
+  function postfix(tokens: Token[]): Token[] {
+    const output: Token[] = [];
+    const stack: Token[] = [];
+
+    function unstackUntilOpen() {
+      while (stack.length > 0 && stack[stack.length - 1] !== Symbol.Open) {
+        // we already made sure the stack isn't empty
+        output.push(stack.pop()!);
+      }
     }
 
-    type SymbolMap = {
-        [key: string]: Symbol;
+    for (let i = 0; i < tokens.length; i++) {
+      const token = tokens[i];
+      if (token === Symbol.Open) {
+        stack.push(token);
+      } else if (token === Symbol.Close) {
+        unstackUntilOpen();
+        stack.pop();
+      } else if (Object.values(Symbol).includes(token as Symbol)) {
+        // must be an operator
+        unstackUntilOpen();
+        stack.push(token);
+      } else if (typeof token === "number" || typeof token === "string") {
+        output.push(token);
+      }
+    }
+
+    while (stack.length > 0) {
+      if (stack[stack.length - 1] === Symbol.Open) {
+        throw new Error("unmatched open parenthesis");
+      }
+      output.push(stack.pop()!);
+    }
+
+    return output;
+  }
+
+  function execute(
+    tokens: Token[],
+    x: number,
+    y: number,
+    debug?: (token: Token, stack: number[]) => void,
+  ) {
+    const stack: number[] = [];
+
+    function pop2(source: string): [number, number] | null {
+      const a = stack.pop();
+      if (a === undefined) {
+        throw new Error(
+          `stack underflow on first arg for '${source}' operation`,
+        );
+      }
+      const b = stack.pop();
+      if (b === undefined) {
+        throw new Error(
+          `stack underflow on second arg for '${source}' operation`,
+        );
+      }
+      return [a, b];
+    }
+
+    function binop(op: (a: number, b: number) => number, source: string) {
+      const r = pop2(source);
+      if (r === null) {
+        return;
+      }
+      stack.push(op(r[0], r[1]));
+    }
+
+    const values: { [name: string]: number } = {
+      x: x,
+      y: y,
     };
 
-    const symbolMap: SymbolMap = {
-        "(": Symbol.Open,
-        ")": Symbol.Close,
-        "%": Symbol.Mod,
-        "*": Symbol.Mul,
-        "+": Symbol.Add,
-        "-": Symbol.Sub,
-        "/": Symbol.Div,
-        "!": Symbol.Pow,
-        "^": Symbol.Xor,
-        "&": Symbol.And,
-        "|": Symbol.Or,
+    const operations: { [name: string]: () => void } = {
+      mod: () => binop((a, b) => b % a, "mod"),
+      mul: () => binop((a, b) => b * a, "mul"),
+      add: () => binop((a, b) => b + a, "add"),
+      sub: () => binop((a, b) => b - a, "sub"),
+      div: () => binop((a, b) => b / a, "div"),
+      pow: () => binop((a, b) => Math.pow(b, a), "pow"),
+      xor: () => binop((a, b) => b ^ a, "xor"),
+      and: () => binop((a, b) => b & a, "and"),
+      or: () => binop((a, b) => b | a, "or"),
     };
 
-    type Token = number | string | Symbol;
+    for (let i = 0; i < tokens.length; i++) {
+      const token = tokens[i];
+      if (operations[token]) {
+        operations[token]();
+      } else if (typeof token === "number") {
+        stack.push(token);
+      } else if (typeof token === "string") {
+        if (values[token] === undefined) {
+          throw new Error(`unknown variable: ${token}`);
+        }
+        stack.push(values[token]);
+      } else {
+        throw new Error(`unknown token: ${token}`);
+      }
 
-    function isDigit(c: string) {
-        return c >= "0" && c <= "9";
+      if (debug) {
+        debug(token, stack);
+      }
     }
 
-    function isAlpha(c: string) {
-        return (c >= "a" && c <= "z") || (c >= "A" && c <= "Z");
+    return stack[0];
+  }
+
+  function render(
+    canvas: HTMLCanvasElement,
+    tokens: Token[],
+    scale: number,
+    continuous: boolean,
+  ) {
+    const ctx = canvas.getContext("2d");
+    if (ctx === null) {
+      throw new Error("could not get 2d context");
     }
 
-    function isAlphanumeric(c: string) {
-        return isDigit(c) || isAlpha(c);
+    for (let x = 0; x < 256; x++) {
+      for (let y = 0; y < 256; y++) {
+        const result = execute(tokens, x, y);
+        const color = continuous
+          ? 255 - (Math.abs(result) % 255)
+          : result
+            ? 0
+            : 255;
+        ctx.fillStyle = `rgb(${color}, ${color}, ${color})`;
+        ctx.fillRect(x * scale, y * scale, scale, scale);
+      }
     }
+  }
 
-    function parseNumber(code: string, i: number): [number, number] {
-        const head = i;
-        while (i < code.length && isDigit(code[i])) {
-            i++;
-        }
-        return [parseInt(code.slice(head, i)), i];
-    }
+  function resize(canvas: HTMLCanvasElement, scale: number) {
+    canvas.width = 256 * scale;
+    canvas.height = 256 * scale;
+  }
 
-    function parseIdentifier(code: string, i: number): [string, number] {
-        const head = i;
-        while (i < code.length && isAlphanumeric(code[i])) {
-            i++;
-        }
-        return [code.slice(head, i), i];
-    }
-
-    function parse(code: string): Token[] {
-        let tokens = [];
-        for (let i = 0; i < code.length; i++) {
-            const c = code[i];
-            if (symbolMap[c]) {
-                tokens.push(symbolMap[c]);
-            } else if (isDigit(c)) {
-                const [num, j] = parseNumber(code, i);
-                tokens.push(num);
-                i = j - 1;
-            } else if (isAlpha(c)) {
-                const [ident, j] = parseIdentifier(code, i);
-                tokens.push(ident);
-                i = j - 1;
-            }
-        }
-        return tokens;
-    }
-
-    function postfix(tokens: Token[]): Token[] {
-        let output: Token[] = [];
-        let stack: Token[] = [];
-
-        function unstackUntilOpen() {
-            while (
-                stack.length > 0 &&
-                stack[stack.length - 1] !== Symbol.Open
-            ) {
-                // we already made sure the stack isn't empty
-                output.push(stack.pop()!);
-            }
-        }
-
-        for (let i = 0; i < tokens.length; i++) {
-            const token = tokens[i];
-            if (token === Symbol.Open) {
-                stack.push(token);
-            } else if (token === Symbol.Close) {
-                unstackUntilOpen();
-                stack.pop();
-            } else if (Object.values(Symbol).includes(token as Symbol)) {
-                // must be an operator
-                unstackUntilOpen();
-                stack.push(token);
-            } else if (typeof token === "number" || typeof token === "string") {
-                output.push(token);
-            }
-        }
-
-        while (stack.length > 0) {
-            if (stack[stack.length - 1] === Symbol.Open) {
-                throw new Error("unmatched open parenthesis");
-            }
-            output.push(stack.pop()!);
-        }
-
-        return output;
-    }
-
-    function execute(
-        tokens: Token[],
-        x: number,
-        y: number,
-        debug?: (token: Token, stack: number[]) => void,
-    ) {
-        let stack: number[] = [];
-
-        function pop2(source: string): [number, number] | null {
-            let a = stack.pop();
-            if (a === undefined) {
-                throw new Error(
-                    `stack underflow on first arg for '${source}' operation`,
-                );
-            }
-            let b = stack.pop();
-            if (b === undefined) {
-                throw new Error(
-                    `stack underflow on second arg for '${source}' operation`,
-                );
-            }
-            return [a, b];
-        }
-
-        function binop(op: (a: number, b: number) => number, source: string) {
-            const r = pop2(source);
-            if (r === null) {
-                return;
-            }
-            stack.push(op(r[0], r[1]));
-        }
-
-        const values: { [name: string]: number } = {
-            x: x,
-            y: y,
-        };
-
-        const operations: { [name: string]: () => void } = {
-            mod: () => binop((a, b) => b % a, "mod"),
-            mul: () => binop((a, b) => b * a, "mul"),
-            add: () => binop((a, b) => b + a, "add"),
-            sub: () => binop((a, b) => b - a, "sub"),
-            div: () => binop((a, b) => b / a, "div"),
-            pow: () => binop((a, b) => Math.pow(b, a), "pow"),
-            xor: () => binop((a, b) => b ^ a, "xor"),
-            and: () => binop((a, b) => b & a, "and"),
-            or: () => binop((a, b) => b | a, "or"),
-        };
-
-        for (let i = 0; i < tokens.length; i++) {
-            const token = tokens[i];
-            if (operations[token]) {
-                operations[token]();
-            } else if (typeof token === "number") {
-                stack.push(token);
-            } else if (typeof token === "string") {
-                if (values[token] === undefined) {
-                    throw new Error(`unknown variable: ${token}`);
-                }
-                stack.push(values[token]);
-            } else {
-                throw new Error(`unknown token: ${token}`);
-            }
-
-            if (debug) {
-                debug(token, stack);
-            }
-        }
-
-        return stack[0];
-    }
-
-    function render(
-        canvas: HTMLCanvasElement,
-        tokens: Token[],
-        scale: number,
-        continuous: boolean,
-    ) {
-        const ctx = canvas.getContext("2d");
-        if (ctx === null) {
-            throw new Error("could not get 2d context");
-        }
-
-        for (let x = 0; x < 256; x++) {
-            for (let y = 0; y < 256; y++) {
-                let result = execute(tokens, x, y);
-                let color = continuous
-                    ? 255 - (Math.abs(result) % 255)
-                    : result
-                      ? 0
-                      : 255;
-                ctx.fillStyle = `rgb(${color}, ${color}, ${color})`;
-                ctx.fillRect(x * scale, y * scale, scale, scale);
-            }
-        }
-    }
-
-    function resize(canvas: HTMLCanvasElement, scale: number) {
-        canvas.width = 256 * scale;
-        canvas.height = 256 * scale;
-    }
-
-    function debug(tokens: Token[], x: number, y: number) {
-        const steps: Array<{ token: Token; stack: number[] }> = [];
-        execute(tokens, x, y, (token, stack) => {
-            steps.push({ token, stack: stack.slice() });
-        });
-        const trace = ensureElement("debugger-trace", HTMLTableSectionElement);
-        trace.innerHTML = "";
-        for (let i = 0; i < steps.length; i++) {
-            const { token, stack } = steps[i];
-            const row = document.createElement("tr");
-            row.innerHTML = `
+  function debug(tokens: Token[], x: number, y: number) {
+    const steps: Array<{ token: Token; stack: number[] }> = [];
+    execute(tokens, x, y, (token, stack) => {
+      steps.push({ token, stack: stack.slice() });
+    });
+    const trace = ensureElement("debugger-trace", HTMLTableSectionElement);
+    trace.innerHTML = "";
+    for (let i = 0; i < steps.length; i++) {
+      const { token, stack } = steps[i];
+      const row = document.createElement("tr");
+      row.innerHTML = `
                     <td>${i}</td>
                     <td>${token}</td>
                     <td>${stack.join(", ")}</td>
                 `;
-            trace.appendChild(row);
+      trace.appendChild(row);
+    }
+  }
+
+  function refresh(
+    code: string,
+    canvas: HTMLCanvasElement,
+    scale: number,
+    continuous: boolean,
+  ) {
+    const error = ensureElement("debugger-error", HTMLParagraphElement);
+
+    // attempt a function and put any errors into the error element
+    function maybe<T>(fn: () => T): T {
+      error.style.display = "none";
+      try {
+        return fn();
+      } catch (e) {
+        if (e instanceof Error) {
+          error.style.display = "block";
+          error.textContent = "error: " + e.message;
         }
+        throw e;
+      }
     }
 
-    function refresh(
-        code: string,
-        canvas: HTMLCanvasElement,
-        scale: number,
-        continuous: boolean,
-    ) {
-        const error = ensureElement("debugger-error", HTMLParagraphElement);
+    try {
+      const tokens = maybe(() => parse(code));
+      const expr = maybe(() => postfix(tokens));
+      ensureElement("debugger-parse", HTMLParagraphElement).textContent =
+        `parse: [${tokens.join(", ")}]`;
+      ensureElement("debugger-postfix", HTMLParagraphElement).textContent =
+        `postfix: [${expr.join(", ")}]`;
+      maybe(() => debug(expr, 32, 32));
+      resize(canvas, scale);
+      render(canvas, expr, scale, continuous);
+    } catch (e) {
+      console.error(e);
+      return;
+    }
+  }
 
-        // attempt a function and put any errors into the error element
-        function maybe<T>(fn: () => T): T {
-            error.style.display = "none";
-            try {
-                return fn();
-            } catch (e) {
-                if (e instanceof Error) {
-                    error.style.display = "block";
-                    error.textContent = "error: " + e.message;
-                }
-                throw e;
-            }
-        }
+  function ensureElement<T extends HTMLElement>(
+    id: string,
+    type: new () => T,
+  ): T {
+    const el = document.getElementById(id);
+    if (el === null || !(el instanceof type)) {
+      throw new Error(`element #${id} not found or not of type ${type}`);
+    }
+    return el;
+  }
 
-        try {
-            const tokens = maybe(() => parse(code));
-            const expr = maybe(() => postfix(tokens));
-            ensureElement("debugger-parse", HTMLParagraphElement).textContent =
-                `parse: [${tokens.join(", ")}]`;
-            ensureElement(
-                "debugger-postfix",
-                HTMLParagraphElement,
-            ).textContent = `postfix: [${expr.join(", ")}]`;
-            maybe(() => debug(expr, 32, 32));
-            resize(canvas, scale);
-            render(canvas, expr, scale, continuous);
-        } catch (e) {
-            console.error(e);
-            return;
-        }
+  document.addEventListener("astro:page-load", () => {
+    // only run on /xy
+    // TODO: is there a better way to do this?
+    if (!location.pathname.includes("/xy")) {
+      return;
     }
 
-    function ensureElement<T extends HTMLElement>(
-        id: string,
-        type: new () => T,
-    ): T {
-        const el = document.getElementById(id);
-        if (el === null || !(el instanceof type)) {
-            throw new Error(`element #${id} not found or not of type ${type}`);
-        }
-        return el;
-    }
+    let scale = 1;
 
-    document.addEventListener("astro:page-load", () => {
-        // only run on /xy
-        // TODO: is there a better way to do this?
-        if (!location.pathname.includes("/xy")) {
-            return;
-        }
+    const canvas = ensureElement("canvas", HTMLCanvasElement);
+    const code = ensureElement("code", HTMLTextAreaElement);
+    const continuous = ensureElement("continuous", HTMLInputElement);
+    const upscale = ensureElement("upscale", HTMLInputElement);
 
-        let scale = 1;
-
-        const canvas = ensureElement("canvas", HTMLCanvasElement);
-        const code = ensureElement("code", HTMLTextAreaElement);
-        const continuous = ensureElement("continuous", HTMLInputElement);
-        const upscale = ensureElement("upscale", HTMLInputElement);
-
-        code.addEventListener("input", () =>
-            refresh(code.value, canvas, scale, continuous.checked),
-        );
-        continuous.addEventListener("input", () =>
-            refresh(code.value, canvas, scale, continuous.checked),
-        );
-        upscale.addEventListener("input", () => {
-            scale = upscale.checked ? 2 : 1;
-            refresh(code.value, canvas, scale, continuous.checked);
-        });
-        refresh(code.value, canvas, scale, continuous.checked);
+    code.addEventListener("input", () =>
+      refresh(code.value, canvas, scale, continuous.checked),
+    );
+    continuous.addEventListener("input", () =>
+      refresh(code.value, canvas, scale, continuous.checked),
+    );
+    upscale.addEventListener("input", () => {
+      scale = upscale.checked ? 2 : 1;
+      refresh(code.value, canvas, scale, continuous.checked);
     });
+    refresh(code.value, canvas, scale, continuous.checked);
+  });
 </script>
 
 <style lang="css">
-    #canvas {
-        margin-bottom: 2rem;
-        box-shadow: 2px 2px 16px 0 rgba(0, 0, 0, 0.3);
-    }
+  #canvas {
+    margin-bottom: 2rem;
+    box-shadow: 2px 2px 16px 0 rgba(0, 0, 0, 0.3);
+  }
 
-    .center {
-        margin: 0 auto;
-        display: block;
-        width: fit-content;
-    }
+  .center {
+    margin: 0 auto;
+    display: block;
+    width: fit-content;
+  }
 
-    textarea {
-        display: block;
-        background: none;
-        border: 1px solid var(--c-edge);
-        font-family: monospace;
-        font-size: 2rem;
-        margin: 0 auto;
-        min-height: 3rem;
-        min-width: 256px;
-        padding: 0.5rem;
-        text-align: center;
-        width: 100%;
-    }
+  textarea {
+    display: block;
+    background: none;
+    border: 1px solid var(--c-edge);
+    font-family: monospace;
+    font-size: 2rem;
+    margin: 0 auto;
+    min-height: 3rem;
+    min-width: 256px;
+    padding: 0.5rem;
+    text-align: center;
+    width: 100%;
+  }
 
-    ul.examples {
-        font-size: 1.2rem;
-    }
+  ul.examples {
+    font-size: 1.2rem;
+  }
 
-    .italic {
-        font-style: italic;
-    }
+  .italic {
+    font-style: italic;
+  }
 
-    p#debugger-error {
-        display: none;
-        font-weight: bold;
-        color: var(--c-error);
-        border: 3px solid var(--c-error);
-        padding: 1rem;
-    }
+  p#debugger-error {
+    display: none;
+    font-weight: bold;
+    color: var(--c-error);
+    border: 3px solid var(--c-error);
+    padding: 1rem;
+  }
 </style>

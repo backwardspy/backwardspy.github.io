@@ -2,35 +2,35 @@
 import BaseLayout from "./BaseLayout.astro";
 
 interface Props {
-    title: string;
-    slug: string;
-    noHeader?: boolean;
+  title: string;
+  slug: string;
+  noHeader?: boolean;
+  frontmatter?: Props;
 }
 
-// @ts-ignore  it doesn't like `frontmatter`, but it still works
-const { title, slug } = Astro.props.frontmatter || Astro.props;
+const { title, slug } = Astro.props.frontmatter ?? Astro.props;
 ---
 
 <BaseLayout title={title} noHeader>
-    <div class="content" transition:name={slug}>
-        <h1>{title}</h1>
-        <main>
-            <slot />
-        </main>
-    </div>
+  <div class="content" transition:name={slug}>
+    <h1>{title}</h1>
+    <main>
+      <slot />
+    </main>
+  </div>
 </BaseLayout>
 
 <style lang="css" is:global>
-    div.content {
-        margin: 0 auto;
-        max-width: 800px;
-        padding: 3rem;
-        background-color: var(--c-bg2);
-    }
+  div.content {
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 3rem;
+    background-color: var(--c-bg2);
+  }
 
-    @media (max-width: 800px) {
-        div.content {
-            padding: 1rem;
-        }
+  @media (max-width: 800px) {
+    div.content {
+      padding: 1rem;
     }
+  }
 </style>

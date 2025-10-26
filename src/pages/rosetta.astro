@@ -5,47 +5,47 @@ import inscriptions from "../inscriptions.json";
 ---
 
 <StandardLayout title="the catppuccin stone" slug="rosetta">
-    <div class="stone">
-        {
-            inscriptions.map((inscription) => (
-                <div class="inscription">
-                    {inscription.lines.map((line) => (
-                        <p>{line}</p>
-                    ))}
-                    <p class="credit">
-                        <small>
-                            {inscription.language} translation by{" "}
-                            <a href={inscription.link}>{inscription.author}</a>
-                        </small>
-                    </p>
-                </div>
-            ))
-        }
-    </div>
+  <div class="stone">
+    {
+      inscriptions.map((inscription) => (
+        <div class="inscription">
+          {inscription.lines.map((line) => (
+            <p>{line}</p>
+          ))}
+          <p class="credit">
+            <small>
+              {inscription.language} translation by{" "}
+              <a href={inscription.link}>{inscription.author}</a>
+            </small>
+          </p>
+        </div>
+      ))
+    }
+  </div>
 </StandardLayout>
 
 <style lang="css">
+  div.stone {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 768px) {
     div.stone {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.5rem;
+      grid-template-columns: 1fr;
     }
+  }
 
-    @media (max-width: 768px) {
-        div.stone {
-            grid-template-columns: 1fr;
-        }
-    }
+  div.inscription {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    padding: 1rem;
+  }
 
-    div.inscription {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        text-align: center;
-        padding: 1rem;
-    }
-
-    div.inscription > p.credit {
-        height: 1rem;
-    }
+  div.inscription > p.credit {
+    height: 1rem;
+  }
 </style>
