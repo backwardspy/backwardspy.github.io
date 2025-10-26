@@ -2,38 +2,39 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - "main"
+      - main
 
 jobs:
   build:
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: "actions/checkout@v4"
-      - uses: "actions/setup-node@v4"
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: "lts/*"
-          cache: "npm"
-      - run: "npm clean-install"
-      - run: "npm run build"
-      - uses: "actions/upload-pages-artifact@v3"
+          node-version: lts/*
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm run build
+      - uses: actions/upload-pages-artifact@v4
         with:
-          path: "dist/"
+          path: dist/
 
   deploy:
-    needs: "build"
+    needs: build
 
     permissions:
-      pages: "write"
-      id-token: "write"
+      pages: write
+      id-token: write
 
     environment:
-      name: "github-pages"
-      url: "${{ steps.deployment.outputs.page_url }}"
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
 
     steps:
-      - name: "Deploy to GitHub Pages"
+      - name: Deploy to GitHub Pages
         id: "deployment"
         uses: "actions/deploy-pages@v4"
